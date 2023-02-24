@@ -3,21 +3,22 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idental_n_patient/layout/home_screen.dart';
-// import 'package:idental_n_patient/screens/appointment_screen.dart';
-// import 'package:idental_n_patient/screens/appoit_screen.dart';
-// import 'package:idental_n_patient/shared/bloc_observer.dart';
-// import 'package:idental_n_patient/upload.dart';
+import 'package:idental_n_patient/shared/bloc_observer.dart';
+
 import './getting_started_screen.dart';
 
-void main() {
+
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  Bloc.observer = MyBlocObserver();
+
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(MyApp());
   });
 }
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
       // home: DoctorDetailPage(),
       home: GettingStartedScreen(),

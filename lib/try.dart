@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 class ScheduleCard extends StatelessWidget {
-  const ScheduleCard({Key key, this.date, this.day, this.time})
+  const ScheduleCard({Key? key, required this.date, required this.day, required this.time})
       : super(key: key);
   final String date;
   final String day;
@@ -60,7 +60,7 @@ class ScheduleCard extends StatelessWidget {
 }
 
 class try2 extends StatelessWidget {
-  const try2({Key key}) : super(key: key);
+  // const try2({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +133,7 @@ class try2 extends StatelessWidget {
                       ScheduleCard(
                         date: '16/2/2023',
                         day: 'Monday',
-                        time: '08:30 PM',
+                        time: '08:30 PM', key:key!,
                       ),
                       const SizedBox(
                         height: 15,

@@ -5,7 +5,7 @@ import 'package:idental_n_patient/shared/components/components.dart';
 
 
 class Success extends StatefulWidget {
-  Success({Key key}) : super(key: key);
+
 
   @override
   _SuccessState createState() => _SuccessState();

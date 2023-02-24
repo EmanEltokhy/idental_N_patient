@@ -10,7 +10,7 @@ import '../booking_page.dart';
 class DetailPage extends StatefulWidget {
   final Doctor doctor;
 
-  const DetailPage({key, this.doctor}) : super(key: key);
+  const DetailPage({key, required this.doctor}) : super(key: key);
 
   @override
   _DetailPageState createState() => _DetailPageState();

@@ -8,10 +8,10 @@ class Doctor {
   final double rating;
 
   Doctor({
-    this.firstName,
-    this.lastName,
-    this.image,
-    this.type,
-    this.rating,
+    required this.firstName,
+    required this.lastName,
+    required this.image,
+    required this.type,
+    required this.rating,
   });
 }

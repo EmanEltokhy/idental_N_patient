@@ -8,8 +8,8 @@ class HDCell extends StatelessWidget {
   final Function onTap;
 
   const HDCell({
-    this.doctor,
-    this.onTap,
+    required this.doctor,
+    required this.onTap,
   }) ;
 
   @override
