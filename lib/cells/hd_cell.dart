@@ -1,15 +1,18 @@
+import 'package:idental_n_patient/models/DentistModel.dart';
 import 'package:idental_n_patient/models/doctor.dart';
 import 'package:idental_n_patient/utils/custom_icons_icons.dart';
 import 'package:idental_n_patient/utils/he_color.dart';
 import 'package:flutter/material.dart';
 
 class HDCell extends StatelessWidget {
-  final Doctor doctor;
+  final String name;
+  final String image;
   final Function onTap;
 
   const HDCell({
-    this.doctor,
-    this.onTap,
+    required this.name,
+    required this.image,
+    required this.onTap,
   }) ;
 
   @override
@@ -59,22 +62,14 @@ class HDCell extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Dr. ${doctor.firstName}',
+                    'Dr.'+'${name}',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 3,),
-                  Text(
-                    '${doctor.lastName}',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+
                   SizedBox(height: 3,),
                   // Row(
                   //   children: [
@@ -132,7 +127,7 @@ class HDCell extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 child: Icon(
-                  CustomIcons.arrow_right,
+                  Icons.arrow_right,
                   color: Colors.white,
                   size: 18,
                 ),
@@ -146,15 +141,18 @@ class HDCell extends StatelessWidget {
                 width: 100,
                 height: 90,
                 child: Hero(
-                  tag: doctor.firstName + doctor.lastName,
+                  tag: name,
                   child: Container(
                     // color: Colors.white,
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color: Colors.grey[350]),
-                    child: Image(
-                      filterQuality: FilterQuality.high,
-                      image: AssetImage('assets/images/' + doctor.image),
-
-                    ),
+                    child: Image.network('${image}',
+                    fit: BoxFit.fill,
+                    filterQuality: FilterQuality.high,),
+                    // Image(
+                    //  backgroundImage: NetworkImage('${image}'),
+                    //   // image: AssetImage('assets/images/' + doctor.image),
+                    //
+                    // ),
                   ),
                 ),
               ),

@@ -1,28 +1,35 @@
-import 'package:idental_n_patient/cells/detail_cell.dart';
-import 'package:idental_n_patient/models/doctor.dart';
-import 'package:idental_n_patient/shared/components/components.dart';
-import 'package:idental_n_patient/utils/custom_icons_icons.dart';
-import 'package:idental_n_patient/utils/he_color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:idental_n_patient/pages/home_page.dart';
 import '../booking_page.dart';
+import '../cells/detail_cell.dart';
+import '../shared/components/components.dart';
+import '../utils/custom_icons_icons.dart';
+import '../utils/he_color.dart';
 
-class DetailPage extends StatefulWidget {
-  final Doctor doctor;
+class Detailpage extends StatelessWidget {
+  final Map<String, dynamic> dentist;
+  const Detailpage({required this.dentist});
+  /// App Bar
 
-  const DetailPage({key, this.doctor}) : super(key: key);
-
-  @override
-  _DetailPageState createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
-  /// **********************************************
-  /// LIFE CYCLE METHODS
-  /// **********************************************
 
   @override
   Widget build(BuildContext context) {
+    AppBar _buildAppBar() {
+      return AppBar(
+        backgroundColor: Colors.teal,
+        elevation: 0,
+        // brightness: Brightness.dark,
+        // iconTheme: IconThemeData(color: Colors.white),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new_outlined, size: 20),
+            onPressed: (){
+              navigateAndFinish(context, HomePage());
+            }
+          // => Navigator.pop(),
+        ),
+      );
+    }
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: _buildAppBar(),
@@ -42,10 +49,10 @@ class _DetailPageState extends State<DetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Dr.' +
-                        widget.doctor.firstName +
-                        ' ' +
-                        widget.doctor.lastName,
+                    'Dr.' +'${dentist['name']}',
+                        // widget.doctor.firstName +
+                        // ' ' +
+                        // widget.doctor.lastName,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 22,
@@ -55,24 +62,49 @@ class _DetailPageState extends State<DetailPage> {
                   SizedBox(
                     height: 8,
                   ),
-                  Row(
+                  Column(
                     children: [
-                      Icon(
-                        CustomIcons.pin_location,
-                        size: 14,
-                        color: HexColor('#C6C6CD'),
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        'Melbourn, Australia',
-                        style: TextStyle(
-                          color: HexColor('#C6C6CD'),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
+                      Row(children: [
+                        Icon(
+                          Icons.home,
+                          size: 14,
+                          // color: HexColor('#C6C6CD'),
+                          color: Colors.teal,
                         ),
-                      ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          '${dentist['clinicname']}',
+                          style: TextStyle(
+                             color: HexColor('#C6C6CD'),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],),
+                   Row(children: [
+                     Icon(
+                       Icons.location_on,
+                       size: 14,
+                       // color: HexColor('#C6C6CD'),
+                       color: Colors.teal,
+                     ),
+
+                     SizedBox(
+                       height: 4,
+                     ),
+                     Text(
+                     '${dentist['clinicaddress']}',
+                       style: TextStyle(
+                         color: HexColor('#C6C6CD'),
+                         fontSize: 14,
+                         fontWeight: FontWeight.w400,
+                       ),
+                     ),
+                   ],
+                   ),
+
                     ],
                   ),
                   SizedBox(
@@ -131,8 +163,8 @@ class _DetailPageState extends State<DetailPage> {
                     ),
                   ),
                   SizedBox(
-                height: 32,
-              ),
+                    height: 32,
+                  ),
                   defaultButton(size.width, 50.0, 'Book Appointment', 0, (){
                     Navigator.push(
                       context,
@@ -148,25 +180,14 @@ class _DetailPageState extends State<DetailPage> {
         ),
       ),
     );
-  }
 
+
+  }
   /// **********************************************
   /// WIDGETS
   /// **********************************************
 
-  /// App Bar
-  AppBar _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.teal,
-      elevation: 0,
-      // brightness: Brightness.dark,
-      // iconTheme: IconThemeData(color: Colors.white),
-      leading: IconButton(
-        icon: Icon(CustomIcons.arrow_left, size: 20),
-        onPressed: () => Navigator.pop(context),
-      ),
-    );
-  }
+
 
   /// Title Section
   Container _titleSection() {
@@ -195,12 +216,23 @@ class _DetailPageState extends State<DetailPage> {
               child: AspectRatio(
                 aspectRatio: 196 / 285,
                 child: Hero(
-                  tag: widget.doctor.firstName + widget.doctor.lastName,
-                  child: Image(
-                    filterQuality: FilterQuality.high,
-                    fit: BoxFit.fitHeight,
-                    image: AssetImage('assets/images/' + widget.doctor.image),
-                  ),
+                  tag: dentist['name'],
+                  // tag: widget.doctor.firstName + widget.doctor.lastName,
+                  child: DecoratedBox( decoration: new BoxDecoration(
+                    image: new DecorationImage(
+                      image: NetworkImage('${dentist['profileimage']}'),
+                    fit: BoxFit.fill,
+                    alignment: Alignment.center,),
+                  ),),
+
+                  // Image.network(
+                  //   '${dentist['profileimage']}',
+                  //   filterQuality: FilterQuality.high,
+                  //   fit: BoxFit.contain,),
+                    // image: NetworkImage('${dentist['profileimage']}'),
+
+                    // image: AssetImage('assets/images/' + widget.doctor.image),
+
                 ),
               ),
             ),
@@ -224,9 +256,9 @@ class _DetailPageState extends State<DetailPage> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
-                children: [
-                  Text(
-                    widget.doctor.rating.toString(),
+                children: const [
+                  Text('4.5',
+                    // widget.doctor.rating.toString(),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -237,7 +269,7 @@ class _DetailPageState extends State<DetailPage> {
                     width: 4,
                   ),
                   Icon(
-                    CustomIcons.star,
+                    Icons.star,
                     color: Colors.white,
                     size: 14,
                   ),

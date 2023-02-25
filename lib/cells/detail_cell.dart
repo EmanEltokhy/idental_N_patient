@@ -7,8 +7,8 @@ class DetailCell extends StatelessWidget {
 
   const DetailCell({
     // required Key key,
-    this.title,
-    this.subTitle,
+    required this.title,
+    required this.subTitle,
   }) ;
 
   @override

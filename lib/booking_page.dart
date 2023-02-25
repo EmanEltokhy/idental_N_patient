@@ -1,4 +1,3 @@
-import 'package:idental_n_patient/shared/components/components.dart';
 import 'package:idental_n_patient/success.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -6,7 +5,6 @@ import 'booking_datetime_converted.dart';
 import 'button.dart';
 
 class BookingPage extends StatefulWidget {
-  BookingPage({Key key}) : super(key: key);
 
   @override
   State<BookingPage> createState() => _BookingPageState();
@@ -17,7 +15,7 @@ class _BookingPageState extends State<BookingPage> {
   CalendarFormat _format = CalendarFormat.month;
   DateTime _focusDay = DateTime.now();
   DateTime _currentDay = DateTime.now();
-  int _currentIndex;
+   int? _currentIndex;
   bool _isWeekend = false;
   bool _dateSelected = false;
   bool _timeSelected = false;
@@ -34,7 +32,7 @@ class _BookingPageState extends State<BookingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+
       appBar: AppBar(
         leading: const Icon(Icons.arrow_back_ios,color: Colors.black),
         backgroundColor: Colors.white,
@@ -124,13 +122,13 @@ class _BookingPageState extends State<BookingPage> {
               child: Button(
                 width: double.infinity,
                 title: 'Make Appointment',
-                colors_one : [Colors.grey[600],Colors.grey[400]],
+                colors_one : [Colors.grey,Colors.grey],
                 colors_two : [Colors.teal, Color(0xFF80CBC4)],
                 onPressed: () async {
                   //convert date/day/time into string first
                   final getDate = DateConverted.getDate(_currentDay);
                   final getDay = DateConverted.getDay(_currentDay.weekday);
-                  final getTime = DateConverted.getTime(_currentIndex);
+                  final getTime = DateConverted.getTime(_currentIndex!);
                   Navigator.push(
                               context,
                               MaterialPageRoute(

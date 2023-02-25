@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 Widget defaultButton(width, height, text,arrow, fn,{color1 = Colors.teal,color2 = const Color(0xFF80CBC4),disable = false}) => TextButton(
     onPressed: disable? null:fn,
     child: Container(
@@ -33,28 +34,61 @@ Widget defaultButton(width, height, text,arrow, fn,{color1 = Colors.teal,color2 
       ),
     )
 );
+
+Widget getErrorText(String errorText) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 16.0),
+    child: Container(
+        height: 16,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 0, bottom: 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                errorText,
+                style: TextStyle(
+                    fontSize: 11,
+                    fontStyle: FontStyle.italic,
+                    color: Color(0xFFFF0000),
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        )),
+  );
+}
 Widget defaultFormField({
-  TextEditingController controller,
-  TextInputType type,
-  void Function(String) onSubmit,
-  void Function(String) onChange,
-  void Function() onTap,
+  required TextEditingController controller,
+  required TextInputType type,
+  void Function(String)? onSubmit,
+  void Function(String)? onChange,
+  void Function()? onTap,
   bool isPassword = false,
-  String Function(String) validate,
-  String label,
-  IconData prefix,
-  IconData suffix,
-  Function suffixPressed,
+  String? Function(String?)? validate,
+  required String label,
+
+  // IconData? prefix,
+  // IconData? suffix,
+  void Function()? suffixPressed,
+
+  required var prefix,
+  IconData? suffix,
+  // Function? suffixPressed,
+
   bool isClickable = true,
-  TextStyle style,
-  GlobalKey<FormFieldState> key,
-  FloatingLabelBehavior floatingLabelBehavior,
-  String intialvalue,
+  TextStyle? style,
+  GlobalKey<FormFieldState>? key,
+  FloatingLabelBehavior? floatingLabelBehavior,
+
+  String? intialvalue,
+
 
 
 
 }) =>
     TextFormField(
+
       // hintText: placeholder,
       // hintStyle: GoogleFonts.montserrat(
       //     fontSize: 16,
@@ -62,7 +96,9 @@ Widget defaultFormField({
       //     fontWeight: FontWeight.bold
       //
       // ),
+
       initialValue: intialvalue,
+
       controller: controller,
       keyboardType: type,
       obscureText: isPassword,
@@ -81,8 +117,95 @@ Widget defaultFormField({
             borderSide: BorderSide(color: Colors.grey)),
         prefixIcon: Icon(prefix,
             color: Colors.black),
+
+        suffixIcon: suffix!= null?
+        IconButton(onPressed: suffixPressed,
+          icon: Icon(suffix,
+            color: Colors.black,),) : null,
+
       ),
+
+
     );
+
+Widget buildReportItem({
+  required context,
+  required String dentistname,
+  required String patientname,
+  required String observation,
+}) => Card(
+  clipBehavior: Clip.antiAliasWithSaveLayer,
+  elevation: 10.0,
+  margin: EdgeInsets.symmetric(
+    horizontal: 8.0,
+  ),
+  child: Padding(
+    padding: const EdgeInsets.all(10.0),
+    child: Column(
+      children: [
+        Row(
+          children: [
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        '${dentistname}',
+                        style: TextStyle(
+                          height: 1.4,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+
+                    ],
+                  ),
+                  Text(
+                    'Febrauray 20, 2023 at 11:00 pm',
+
+                  ),
+                ],
+              ),
+            ),
+
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 15.0,
+          ),
+          child: Container(
+            width: double.infinity,
+            height: 1.0,
+            color: Colors.grey[300],
+          ),
+        ),
+        Text(
+          'Patient Name: ${patientname}',
+
+
+        ),
+        SizedBox(width: 15.0,),
+        Text(
+            'Observation: ${observation}'
+        ),
+
+
+
+      ],
+    ),
+  ),
+);
+
+
+
+
+
+
 
 
 void navigateAndFinish(
@@ -99,9 +222,10 @@ void navigateAndFinish(
       },
     );
 
+
 void showToast({
-   String text,
-   ToastStates state,
+  required String text,
+  required ToastStates state,
 }) =>
     Fluttertoast.showToast(
       msg: text,
@@ -133,6 +257,44 @@ Color chooseToastColor(ToastStates state) {
 
   return color;
 }
+
+
+
+// void showToast({
+//   required String text,
+//   required ToastStates state,
+// }) =>
+//     Fluttertoast.showToast(
+//       msg: text,
+//       toastLength: Toast.LENGTH_LONG,
+//       gravity: ToastGravity.BOTTOM,
+//       timeInSecForIosWeb: 5,
+//       backgroundColor: chooseToastColor(state),
+//       textColor: Colors.white,
+//       fontSize: 16.0,
+//     );
+
+// enum
+// enum ToastStates { SUCCESS, ERROR, WARNING }
+//
+// Color chooseToastColor(ToastStates state) {
+//   Color color;
+//
+//   switch (state) {
+//     case ToastStates.SUCCESS:
+//       color = Colors.green;
+//       break;
+//     case ToastStates.ERROR:
+//       color = Colors.red;
+//       break;
+//     case ToastStates.WARNING:
+//       color = Colors.amber;
+//       break;
+//   }
+//
+//   return color;
+// }
+
 
 // Widget buildTextField(String labelText, String placeholder, bool isPasswordTextField) {
 //   return Padding(

@@ -6,9 +6,9 @@ class Slide {
   final String description;
 
   Slide({
-     this.imageUrl,
-     this.title,
-     this.description,
+     required this.imageUrl,
+     required this.title,
+     required this.description,
   });
 }
 

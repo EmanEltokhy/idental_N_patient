@@ -3,13 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Button extends StatelessWidget {
   const Button(
-      {Key key,
-        this.colors_one,
-        this.colors_two,
-      this.width,
-      this.title,
-      this.onPressed,
-      this.disable})
+      {  Key? key,
+        required this.colors_one,
+        required this.colors_two,
+      required this.width,
+      required this.title,
+      required this.onPressed,
+      required this.disable})
       : super(key: key);
   // final List<Color> colors_one = [Colors.grey,Colors.white];
   // final List<Color> colors_two = [Colors.teal, Color(0xFF80CBC4)];

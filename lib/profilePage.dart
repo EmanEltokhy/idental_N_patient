@@ -1,224 +1,223 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:idental_n_patient/shared/components/components.dart';
+import 'package:idental_n_patient/shared/cubit/cubit.dart';
+import 'package:idental_n_patient/shared/cubit/states.dart';
 
-class SettingsUI extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Setting UI",
-      home: profileScreen(),
-    );
-  }
-}
 
-class profileScreen extends StatefulWidget {
-  @override
-  _profileScreenState createState() => _profileScreenState();
-}
-
-class _profileScreenState extends State<profileScreen> {
-
-  bool showPassword = false;
-  bool edit = true;
-  var nameController = TextEditingController();
-  var userNameController = TextEditingController();
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-  var countryController = TextEditingController();
+class profileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      //   elevation: 1,
-      //   leading: IconButton(
-      //     icon: Icon(
-      //       Icons.arrow_back,
-      //       color: Colors.green,
-      //     ),
-      //     onPressed: () {},
-      //   ),
-      //   actions: [
-      //     IconButton(
-      //       icon: Icon(
-      //         Icons.settings,
-      //         color: Colors.green,
-      //       ),
-      //       onPressed: () {
-      //         // Navigator.of(context).push(MaterialPageRoute(
-      //         //     builder: (BuildContext context) => SettingsPage()));
-      //       },
-      //     ),
-      //   ],
-      // ),
-      body: Container(
-        padding: EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
-                      onPressed: (){
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Center(
-                      child: Text(
-                        "Edit Profile",
-                        style: GoogleFonts.montserrat(
-                            fontSize: 25),
+    bool showPassword = false;
+    bool edit = true;
+    var nameController = TextEditingController();
+    var phoneController = TextEditingController();
+
+    return BlocProvider(
+        create:(BuildContext context) => AppCubit()..getUserData(),
+        child: BlocConsumer<AppCubit, AppStates>(
+          listener: (context, state){
+
+          },
+          builder: (context,state) {
+
+
+            Size size = MediaQuery.of(context).size;
+            if(state is GetPatientDataSuccessState){
+              var model = state.patient;
+              nameController.text= model.name!;
+              phoneController.text = model.phone!;
+
+
+              return Scaffold(
+
+                body: Container(
+                  padding: EdgeInsets.all(16),
+                  child: ListView(
+                    children: [
+                      Row(
+
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                icon: Icon(Icons.arrow_back_ios),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Center(
+                                child: Text(
+                                  "Edit Profile",
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 25),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: TextButton(
+                                  child: Text("Edit",
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 20,
+                                        color: Colors.teal,)),
+                                  onPressed: () {
+
+                                    AppCubit.get(context).uploadProfileImage(
+                                      name: nameController.text,
+                                      phone:phoneController.text,
+
+
+                                    ); }
+                              ),
+                            )
+                          ]
                       ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: TextButton(
-                      child: Text("Edit",
-                          style: GoogleFonts.montserrat(
-                            fontSize: 20,
-                            color: Colors.teal,)),
-                      onPressed: (){
-                        setState(() {
-                          edit=!edit;
-                        });
-                      },),
-                  ),
-                ]
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Center(
-              child: Stack(
-                children: [
-                  Container(
-                    width: 130,
-                    height: 130,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 4,
-                            // color: Theme.of(context).scaffoldBackgroundColor),
-                            color: Color(0xFD4D4D5FA)),
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 2,
-                              blurRadius: 10,
-                              color: Colors.black.withOpacity(0.1),
-                              offset: Offset(0, 10)
-                          )
-                        ],
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                              "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250",
-                            ))),
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 4,
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                          ),
-                          color: Colors.teal,
-                        ),
-                        child: Icon(
-                          Icons.camera_alt_rounded,
-                          color: Colors.white,
-                        ),
-                      )),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 35,
-            ),
-            buildTextField("Full Name", "Eman El-Sayed Abd El-Aziz", false),
-            buildTextField("User Name", "emaneltokhy", false),
-            buildTextField("E-mail", "emaneltokhy@gmail.com", false),
-            buildTextField("Password", "*******", true),
-            buildTextField("Country", "Egypt", false),
-            SizedBox(
-              height: 35,
-            ),
-            defaultButton(size.width, 50.0, "Logout",false,(){
-              print(nameController.text);
-            })
-          ],
-        ),
-      ),
-    );
-  }
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Center(
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 130,
+                              height: 130,
+                              // decoration: BoxDecoration(
+                              //     border: Border.all(
+                              //         width: 4,
+                              //         // color: Theme.of(context).scaffoldBackgroundColor),
+                              //         color: Color(0xFD4D4D5FA)),
+                              //     boxShadow: [
+                              //       BoxShadow(
+                              //           spreadRadius: 2,
+                              //           blurRadius: 10,
+                              //           color: Colors.black.withOpacity(0.1),
+                              //           offset: Offset(0, 10)
+                              //       )
+                              //     ],
+                              //     shape: BoxShape.circle,
+                              //     image: DecorationImage(
+                              //         fit: BoxFit.cover,
+                              //         image: NetworkImage(
+                              //           '${state.dentist.profileimage}'
+                              //    )
+                              //     )
+                              // ),
+                              child: CircleAvatar(
+                                radius: 64.0,
+                                backgroundColor:
+                                Theme.of(context).scaffoldBackgroundColor,
+                                child: state.patient.profileimage!.startsWith('https')?CircleAvatar(
+                                    radius: 60.0,
+                                    backgroundImage: NetworkImage(state.patient.profileimage!)
 
-  Widget buildTextField(String labelText, String placeholder, bool isPasswordTextField) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextFormField(
-        controller: controller(labelText),
-        readOnly: edit,
-        obscureText: isPasswordTextField ? showPassword : false,
-        decoration: InputDecoration(
-            suffixIcon: isPasswordTextField?
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  showPassword = !showPassword;
-                });
-              },
-              icon: Icon(
-                Icons.remove_red_eye,
-                color: Colors.grey,
-              ),
-            ): null,
-            contentPadding: EdgeInsets.only(bottom: 3),
-            labelText: labelText,
-            labelStyle: GoogleFonts.montserrat(
-                fontSize: 15,
-                color: Colors.grey,
-                fontWeight: FontWeight.bold),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
-            hintStyle: GoogleFonts.montserrat(
-                fontSize: 16,
-                color: Colors.black,
-                fontWeight: FontWeight.bold)),
-      ),
+                                ):CircleAvatar(
+                                    radius: 60.0,
+                                    backgroundImage:  FileImage(File(state.patient.profileimage!))
+
+                                ),
+                              ),
+
+                            ),
+                            Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      width: 3,
+                                      color: Theme
+                                          .of(context)
+                                          .scaffoldBackgroundColor,
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  child:
+                                  IconButton(
+                                    icon: Icon(Icons.camera_alt_outlined),
+                                    color: Colors.teal,
+                                    onPressed: (){
+                                      AppCubit.get(context).getProfileImage();
+                                    },
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 35,
+                      ),
+                      defaultFormField(
+
+                        controller: nameController,
+
+                        type: TextInputType.name,
+                        label: 'NAME',
+                        prefix: Icons.person,
+                        style: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      defaultFormField(
+
+                        controller: phoneController,
+                        type: TextInputType.phone,
+                        label: 'PHONE',
+                        prefix: Icons.phone_android,
+                        style: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+
+
+                      SizedBox(
+                        height: 35,
+                      ),
+                      defaultButton(size.width, 50.0, "Logout", false, () {
+                        print(nameController.text);
+                      })
+                    ],
+                  ),
+                ),
+              );
+            }
+            else if(state is GetPatientDataLoadingState){
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            else if(state is GetPatientDataErrorState ){
+              return Center(
+                child: Text(state.error),
+              );
+            }
+            else if (state is UpdatePatientDataErrorState){
+              return Center(
+                child: Text(state.error),
+              );
+            }
+            else{
+              return SizedBox();
+            }
+
+          },
+        )
     );
-  }
-  TextEditingController controller(String labelText)
-  {
-    if(labelText == "Full Name") {
-      return nameController;
-    }
-    else if(labelText == "UserName") {
-      return userNameController;
-    }
-    else if(labelText == "Email") {
-      return emailController;
-    }
-    else if(labelText == "Password") {
-      return passwordController;
-    }
-    else if(labelText == "Country") {
-      return countryController;
-    }
   }
 }
