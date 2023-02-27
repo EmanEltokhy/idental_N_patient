@@ -25,13 +25,11 @@ class DentistModel {
     this.uId,
     this.docid,
     this.profileimage,
-
-
   });
 
   factory DentistModel.fromdoc(QueryDocumentSnapshot<Map<String, dynamic>> doc){
 
-    final dentist =DentistModel(
+    final dentist = DentistModel(
       name :doc.data()!['name'],
       email :doc.data()!['email'],
       phone :doc.data()!['phone'],
@@ -67,9 +65,11 @@ class DentistModel {
       socialnumber: socialnumber??this.socialnumber,
       clinicaddress: clinicaddress??this.clinicaddress,
       clinicname: clinicname??this.clinicname,
-      phone: phone??this.phone
-  );
-  Map<String, dynamic> toMap() {
+      phone: phone??this.phone);
+
+
+
+  Map<String, dynamic> toMap(){
     return {
 
       'name': name,
@@ -85,4 +85,6 @@ class DentistModel {
 
     };
   }
+
+
 }

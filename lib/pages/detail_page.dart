@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:idental_n_patient/pages/home_page.dart';
-import '../booking_page.dart';
+import '../modules/Appointment/booking_page.dart';
 import '../cells/detail_cell.dart';
 import '../shared/components/components.dart';
 import '../utils/custom_icons_icons.dart';
