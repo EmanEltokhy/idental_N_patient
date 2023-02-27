@@ -6,3 +6,6 @@ class ChangeClanderFormatState extends AppointmentStates{
   final CalendarFormat format;
   ChangeClanderFormatState({required this.format});
 }
+class SelectdayloadingState extends AppointmentStates{}
+class SelectdaySuccessState extends AppointmentStates{}
+class ChangeIndexState extends AppointmentStates{}

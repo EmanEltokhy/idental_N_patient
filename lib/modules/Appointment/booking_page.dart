@@ -13,14 +13,8 @@ class BookingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //declaration
-    CalendarFormat _format = CalendarFormat.month;
-    DateTime _focusDay = DateTime.now();
-    DateTime _currentDay = DateTime.now();
-    int? _currentIndex = 0;
-    bool _isWeekend = false;
-    bool _dateSelected = false;
-    bool _timeSelected = false;
+    // declaration
+
     List<int> time = [08,08,09,09,10,10,11,11];
     // String token; //get token for insert booking date and time into database
 
@@ -36,11 +30,11 @@ class BookingPage extends StatelessWidget {
        builder: (context,state){
          Widget _tableCalendar() {
            return TableCalendar(
-             focusedDay: _focusDay,
+             focusedDay: AppointmentCubit.get(context).focusDay,
              firstDay: DateTime.now(),
              lastDay: DateTime(2023, 12, 31),
-             calendarFormat: CalendarFormat.month,
-             currentDay: _currentDay,
+             calendarFormat: AppointmentCubit.get(context).format,
+             currentDay: AppointmentCubit.get(context).currentDay,
              rowHeight: 48,
              calendarStyle: const CalendarStyle(
                todayDecoration:
@@ -107,7 +101,7 @@ class BookingPage extends StatelessWidget {
                    ],
                  ),
                ),
-               _isWeekend ?
+               AppointmentCubit.get(context).isWeekend ?
                SliverToBoxAdapter(
                  child: Container(
                    padding: const EdgeInsets.symmetric(
@@ -142,12 +136,12 @@ class BookingPage extends StatelessWidget {
                          margin: const EdgeInsets.all(5),
                          decoration: BoxDecoration(
                            border: Border.all(
-                             color: _currentIndex == index
+                             color: AppointmentCubit.get(context).currentIndex == index
                                  ? Colors.grey
                                  : Colors.black,
                            ),
                            borderRadius: BorderRadius.circular(15),
-                           color: _currentIndex == index
+                           color: AppointmentCubit.get(context).currentIndex== index
                                ? Colors.teal
                                : Colors.white,
                          ),
@@ -157,7 +151,7 @@ class BookingPage extends StatelessWidget {
                            style: TextStyle(
                              fontWeight: FontWeight.w600,
                              color:
-                             _currentIndex == index ? Colors.white : null,
+                             AppointmentCubit.get(context).currentIndex == index ? Colors.white : null,
                            ),
                          ),
                        ),
@@ -178,9 +172,9 @@ class BookingPage extends StatelessWidget {
                      colors_two : [Colors.teal, Color(0xFF80CBC4)],
                      onPressed: () async {
                        //convert date/day/time into string first
-                       final getDate = DateConverted.getDate(_currentDay);
-                       final getDay = DateConverted.getDay(_currentDay.weekday);
-                       final getTime = DateConverted.getTime(_currentIndex!);
+                       final getDate = DateConverted.getDate(AppointmentCubit.get(context).currentDay);
+                       final getDay = DateConverted.getDay(AppointmentCubit.get(context).currentDay.weekday);
+                       final getTime = DateConverted.getTime(AppointmentCubit.get(context).currentIndex!);
                        Navigator.push(
                          context,
                          MaterialPageRoute(
@@ -189,7 +183,8 @@ class BookingPage extends StatelessWidget {
                        );
                        // }
                      },
-                     disable: _timeSelected && _dateSelected ? false : true,
+                     // disable: _timeSelected && _dateSelected ? false : true,
+                     disable: AppointmentCubit.get(context).timeSelected && AppointmentCubit.get(context).dateSelected ? false : true,
                    ),
                  ),
                ),

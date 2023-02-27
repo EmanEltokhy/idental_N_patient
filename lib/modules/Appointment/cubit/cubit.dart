@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idental_n_patient/modules/Appointment/cubit/states.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -8,38 +10,47 @@ class AppointmentCubit extends Cubit<AppointmentStates> {
 
   static AppointmentCubit get(context) => BlocProvider.of(context);
 
-  CalendarFormat _format = CalendarFormat.month;
-void Change_format(format) {
-  _format = format;
-  emit(ChangeClanderFormatState(format: _format));
+  CalendarFormat format = CalendarFormat.month;
+
+  DateTime focusDay = DateTime.now();
+  DateTime currentDay = DateTime.now();
+  int? currentIndex = 0;
+  bool isWeekend = false;
+  bool dateSelected = false;
+  bool timeSelected = false;
+
+  void Change_format(format) {
+    format = format;
+    emit(ChangeClanderFormatState(format: format));
 
   }
 
-  DateTime _focusDay = DateTime.now();
-  DateTime _currentDay = DateTime.now();
-  int? _currentIndex = 0;
-  bool _isWeekend = false;
-  bool _dateSelected = false;
-  bool _timeSelected = false;
- void Select_day(selectedDay, focusedDay)
-{
-  _currentDay = selectedDay;
-  _focusDay = focusedDay;
-  _dateSelected = true;
+
+
+  void Select_day(selectedDay, focusedDay)
+  {emit(SelectdayloadingState());
+  currentDay = selectedDay;
+  focusDay = focusedDay;
+  dateSelected = true;
 
   //check if weekend is selected
   if (selectedDay.weekday == 5 || selectedDay.weekday == 6) {
-    _isWeekend = true;
-    _timeSelected = false;
-    _currentIndex = null;
+    isWeekend = true;
+    timeSelected = false;
+    currentIndex = null;
+    emit(SelectdaySuccessState());
   } else {
-    _isWeekend = false;
+    isWeekend = false;
+    emit(SelectdaySuccessState());
   }
-}
+  }
 
 
-void changeIndex(index) {
-  _currentIndex = index;
-  _timeSelected = true;
-}
+  void changeIndex(index) {
+    currentIndex = index;
+    timeSelected = true;
+    emit(ChangeIndexState());
+  }
+
+
 }
