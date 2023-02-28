@@ -156,4 +156,19 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+  void getAllDentists(){
+    List<Map<String, dynamic>> Alldentists= [];
+    // final userid = FirebaseAuth.instance.currentUser!.uid;
+    var collection = FirebaseFirestore.instance.collection('Dentists');
+    collection.snapshots().listen((querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        Alldentists.add(doc.data());
+      }
+
+      emit(GetDentistDataSuccessState(dentists:Alldentists));
+
+     });
+   }
+
+
 }

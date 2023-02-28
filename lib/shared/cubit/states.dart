@@ -1,6 +1,7 @@
-
 import 'dart:async';
 import 'dart:io';
+
+import 'package:idental_n_patient/models/DentistModel.dart';
 
 import '../../models/patient.dart';
 abstract class AppStates {}
@@ -37,4 +38,7 @@ class UpdatePatientDataErrorState extends AppStates {
 
   UpdatePatientDataErrorState(this.error);
 }
-
+class GetDentistDataSuccessState extends AppStates{
+  List<Map<String, dynamic>> dentists;
+  GetDentistDataSuccessState({required this.dentists});
+}

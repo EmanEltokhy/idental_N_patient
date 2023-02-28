@@ -58,6 +58,7 @@ Widget getErrorText(String errorText) {
         )),
   );
 }
+
 Widget defaultFormField({
   required TextEditingController controller,
   required TextInputType type,
