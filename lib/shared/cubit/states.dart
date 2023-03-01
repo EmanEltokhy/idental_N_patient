@@ -1,8 +1,8 @@
-
 import 'dart:async';
 import 'dart:io';
 
 import 'package:idental_n_patient/models/DentistModel.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../models/patient.dart';
 abstract class AppStates {}
@@ -41,6 +41,19 @@ class UpdatePatientDataErrorState extends AppStates {
 }
 class GetDentistDataSuccessState extends AppStates{
   List<Map<String, dynamic>> dentists;
- GetDentistDataSuccessState({required this.dentists});
+  GetDentistDataSuccessState({required this.dentists});
 }
 
+class ChangeClanderFormatState extends AppStates{
+  final CalendarFormat format;
+  ChangeClanderFormatState({required this.format});
+}
+class SelectdayloadingState extends AppStates{}
+class SelectdaySuccessState extends AppStates{}
+class ChangeIndexState extends AppStates{}
+class pickedAppointmentSuccessState extends AppStates{}
+class pickedAppointmentLoadingState extends AppStates{}
+class pickedAppointmentErrorState extends AppStates{
+  final String error;
+  pickedAppointmentErrorState (this.error);
+}

@@ -3,9 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idental_n_patient/modules/Appointment/booking_page.dart';
 import 'package:idental_n_patient/shared/bloc_observer.dart';
-
 import './getting_started_screen.dart';
 
 
@@ -30,8 +28,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       // home: DoctorDetailPage(),
-      // home: GettingStartedScreen(),
-      home: BookingPage(),
+      home: GettingStartedScreen(),
     );
   }
 }

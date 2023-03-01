@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idental_n_patient/shared/cubit/states.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:table_calendar/table_calendar.dart';
+import '../../models/Appointment.dart';
 import '../../models/patient.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -17,11 +19,11 @@ class AppCubit extends Cubit<AppStates> {
 
 
   PatientModel model = PatientModel();
-
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> data = [];
   // uId: value.user!.uid;
   void getUserData() {
     final userid = FirebaseAuth.instance.currentUser!.uid;
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> data = [];
+
     emit(GetPatientDataLoadingState());
 
     FirebaseFirestore.instance.collection('Patients')
@@ -49,6 +51,7 @@ class AppCubit extends Cubit<AppStates> {
       emit(GetPatientDataErrorState(error.toString()));
     }
     );
+
   }
 
   late File profileimage;
@@ -167,7 +170,84 @@ class AppCubit extends Cubit<AppStates> {
 
       emit(GetDentistDataSuccessState(dentists:Alldentists));
 
-    });
+     });
+   }
+  CalendarFormat format = CalendarFormat.month;
+
+  DateTime focusDay = DateTime.now();
+  DateTime currentDay = DateTime.now();
+  int? currentIndex = 0;
+  bool isWeekend = false;
+  bool dateSelected = false;
+  bool timeSelected = false;
+
+  void Change_format(format) {
+    format = format;
+    emit(ChangeClanderFormatState(format: format));
+  }
+
+  void Select_day(selectedDay, focusedDay) {
+    emit(SelectdayloadingState());
+    currentDay = selectedDay;
+    focusDay = focusedDay;
+    dateSelected = true;
+
+    //check if weekend is selected
+    if (selectedDay.weekday == 5 || selectedDay.weekday == 6) {
+      isWeekend = true;
+      timeSelected = false;
+      currentIndex = null;
+      emit(SelectdaySuccessState());
+    } else {
+      isWeekend = false;
+      emit(SelectdaySuccessState());
+    }
+  }
+
+  void changeIndex(index) {
+    currentIndex = index;
+    timeSelected = true;
+    emit(ChangeIndexState());
+  }
+
+  Appointment app_model = Appointment();
+  void AppointmentCreate({
+    String? patientemail,
+    String? dentistname,
+    required String date,
+    required String time,
+    required String day,
+    // String? docId,
+
+  })
+
+  {
+
+
+      Appointment appmodel = Appointment(
+        patientemail: '${FirebaseAuth.instance.currentUser?.email}',
+        dentistname: dentistname,
+        date: date,
+        time: time,
+        day: day,
+        docId: app_model.docId ,
+      );
+
+      FirebaseFirestore.instance
+          .collection('Appointments')
+          .doc()
+          .set(appmodel.toMap())
+          .then((value) {
+
+        emit(pickedAppointmentSuccessState());
+      })
+          .catchError((error) {
+        print(error.toString());
+        emit(pickedAppointmentErrorState(error.toString()));
+      });
+
+
+
   }
 
 

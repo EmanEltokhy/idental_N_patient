@@ -4,14 +4,12 @@ import 'package:idental_n_patient/pages/home_page.dart';
 import '../modules/Appointment/booking_page.dart';
 import '../cells/detail_cell.dart';
 import '../shared/components/components.dart';
-import '../utils/custom_icons_icons.dart';
 import '../utils/he_color.dart';
 
 class Detailpage extends StatelessWidget {
   final Map<String, dynamic> dentist;
   const Detailpage({required this.dentist});
   /// App Bar
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +48,7 @@ class Detailpage extends StatelessWidget {
                 children: [
                   Text(
                     'Dr.' +'${dentist['name']}',
-                        // widget.doctor.firstName +
-                        // ' ' +
-                        // widget.doctor.lastName,
+
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 22,
@@ -77,33 +73,33 @@ class Detailpage extends StatelessWidget {
                         Text(
                           '${dentist['clinicname']}',
                           style: TextStyle(
-                             color: HexColor('#C6C6CD'),
+                            color: HexColor('#C6C6CD'),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],),
-                   Row(children: [
-                     Icon(
-                       Icons.location_on,
-                       size: 14,
-                       // color: HexColor('#C6C6CD'),
-                       color: Colors.teal,
-                     ),
+                      Row(children: [
+                        Icon(
+                          Icons.location_on,
+                          size: 14,
+                          // color: HexColor('#C6C6CD'),
+                          color: Colors.teal,
+                        ),
 
-                     SizedBox(
-                       height: 4,
-                     ),
-                     Text(
-                     '${dentist['clinicaddress']}',
-                       style: TextStyle(
-                         color: HexColor('#C6C6CD'),
-                         fontSize: 14,
-                         fontWeight: FontWeight.w400,
-                       ),
-                     ),
-                   ],
-                   ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          '${dentist['clinicaddress']}',
+                          style: TextStyle(
+                            color: HexColor('#C6C6CD'),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                      ),
 
                     ],
                   ),
@@ -169,7 +165,7 @@ class Detailpage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BookingPage(),
+                        builder: (context) => BookingPage(dintestname: '${dentist['name']}',),
                       ),
                     );
                   })
@@ -186,7 +182,6 @@ class Detailpage extends StatelessWidget {
   /// **********************************************
   /// WIDGETS
   /// **********************************************
-
 
 
   /// Title Section
@@ -221,17 +216,10 @@ class Detailpage extends StatelessWidget {
                   child: DecoratedBox( decoration: new BoxDecoration(
                     image: new DecorationImage(
                       image: NetworkImage('${dentist['profileimage']}'),
-                    fit: BoxFit.fill,
-                    alignment: Alignment.center,),
+                      fit: BoxFit.fill,
+                      alignment: Alignment.center,),
                   ),),
 
-                  // Image.network(
-                  //   '${dentist['profileimage']}',
-                  //   filterQuality: FilterQuality.high,
-                  //   fit: BoxFit.contain,),
-                    // image: NetworkImage('${dentist['profileimage']}'),
-
-                    // image: AssetImage('assets/images/' + widget.doctor.image),
 
                 ),
               ),
@@ -258,7 +246,7 @@ class Detailpage extends StatelessWidget {
               child: Row(
                 children: const [
                   Text('4.5',
-                    // widget.doctor.rating.toString(),
+
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,

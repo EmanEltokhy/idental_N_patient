@@ -1,26 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Appointment{
-  final String? patientname;
+  final String? patientemail;
   final String? dentistname;
-  final String? datetime;
+  final String? date;
+  final String? time;
+  final String? day;
   final String? docId;
 
   Appointment({
-    this.patientname,
+    this.patientemail,
     this.dentistname,
-    this.datetime,
+    this.date,
+    this.time,
+    this.day,
     this.docId,
-});
+  });
 
 
   factory Appointment.fromdoc(QueryDocumentSnapshot<Map<String, dynamic>> doc){
 
     final appointment = Appointment(
-      patientname: doc.data()!['patientname'],
+      patientemail: doc.data()!['patientemail'],
       dentistname: doc.data()!['dentistname'],
-      datetime: doc.data()!['datetime'],
-      docId: doc.data()!['docId'],
+      date: doc.data()!['date'],
+      time: doc.data()!['time'],
+      day: doc.data()!['day'],
+      docId: doc.id
     );
     return appointment;
   }
@@ -28,13 +34,15 @@ class Appointment{
   Map<String, dynamic> toMap(){
     return {
 
-     'patientname':patientname,
-      'dentistname':dentistname,
-      'datetime':datetime,
-      'docId':docId,
+    'patientemail':patientemail,
+    'dentistname':dentistname,
+    'date':date,
+      'time':time,
+      'day':day,
+    'docId':docId,
 
-    };
-  }
+  };
+   }
 
 
 }
