@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idental_n_patient/modules/Appointment/try.dart';
 import 'package:idental_n_patient/success.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../shared/cubit/cubit.dart';
@@ -171,6 +172,7 @@ class BookingPage extends StatelessWidget {
                                time: getTime,
                                day: getDay,
                                );
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(

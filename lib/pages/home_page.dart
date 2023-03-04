@@ -5,6 +5,7 @@ import 'package:idental_n_patient/shared/cubit/cubit.dart';
 import 'package:idental_n_patient/shared/cubit/states.dart';
 
 import '../cells/hd_cell.dart';
+import '../modules/Appointment/try.dart';
 import 'detail_page.dart';
 
 class HomePage extends StatelessWidget {

@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 
@@ -65,6 +67,7 @@ class try2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body:
       SafeArea(
         child: Column(
@@ -178,5 +181,40 @@ class try2 extends StatelessWidget {
       ),
 
     );
+  }
+}
+
+
+
+void registerNotification() async {
+  // // 1. Initialize the Firebase app
+  // await Firebase.initializeApp();
+
+  print('called');
+  // 2. Instantiate Firebase Messaging
+  FirebaseMessaging _messaging = FirebaseMessaging.instance;
+
+  // 3. On iOS, this helps to take the user permissions
+  NotificationSettings settings = await _messaging.requestPermission(
+    alert: true,
+    badge: true,
+    provisional: false,
+    sound: true,
+  );
+
+
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print('User granted permission');
+
+    // For handling the received notifications
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // Parse the message received
+      print('${message.messageId}');
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('on message openedapp');
+    });
+  } else {
+    print('User declined or has not accepted permission');
   }
 }

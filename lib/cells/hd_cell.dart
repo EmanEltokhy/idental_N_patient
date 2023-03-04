@@ -1,5 +1,4 @@
 import 'package:idental_n_patient/models/DentistModel.dart';
-import 'package:idental_n_patient/models/doctor.dart';
 import 'package:idental_n_patient/utils/custom_icons_icons.dart';
 import 'package:idental_n_patient/utils/he_color.dart';
 import 'package:flutter/material.dart';

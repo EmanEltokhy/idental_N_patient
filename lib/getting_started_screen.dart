@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:idental_n_patient/modules/Appointment/try.dart';
 import 'package:idental_n_patient/modules/login/login.dart';
 import 'package:idental_n_patient/models/slide.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,7 +20,9 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
 
   @override
   void initState() {
+
     super.initState();
+
     Timer.periodic(Duration(seconds: 5), (Timer timer) {
       if (_currentPage < 2) {
         _currentPage++;
@@ -33,6 +36,8 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
         curve: Curves.easeIn,
       );
     });
+
+    // registerNotification();
   }
 
   @override

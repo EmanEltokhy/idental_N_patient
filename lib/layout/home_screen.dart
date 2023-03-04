@@ -9,7 +9,7 @@ import 'package:idental_n_patient/history.dart';
 // import 'package:idental/upload.dart';
 
 import '../profilePage.dart';
-import '../try.dart';
+import '../modules/Appointment/try.dart';
 // import '../screens/appointment_screen.dart';
 
 class HomeScreen extends StatefulWidget {
