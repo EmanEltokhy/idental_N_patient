@@ -40,6 +40,7 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
     });
 
     NotificationHelper.registerNotification();
+
   }
 
   @override

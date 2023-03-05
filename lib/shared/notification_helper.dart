@@ -57,4 +57,10 @@ class NotificationHelper {
       print('User declined or has not accepted permission');
     }
   }
+  static String? deviceToken;
+  final FirebaseMessaging messaging = FirebaseMessaging.instance;
+  void getToken() async {
+    deviceToken = await messaging.getToken();
+    print(deviceToken); // print the device token string
+  }
 }
