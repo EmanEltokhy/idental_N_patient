@@ -7,8 +7,8 @@ import 'package:idental_n_patient/shared/components/components.dart';
 import 'package:idental_n_patient/shared/cubit/cubit.dart';
 import 'package:idental_n_patient/shared/cubit/states.dart';
 
-
 class profileScreen extends StatelessWidget {
+  const profileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,36 +18,29 @@ class profileScreen extends StatelessWidget {
     var phoneController = TextEditingController();
 
     return BlocProvider(
-        create:(BuildContext context) => AppCubit()..getUserData(),
+        create: (BuildContext context) => AppCubit()..getUserData(),
         child: BlocConsumer<AppCubit, AppStates>(
-          listener: (context, state){
-
-          },
-          builder: (context,state) {
-
-
+          listener: (context, state) {},
+          builder: (context, state) {
             Size size = MediaQuery.of(context).size;
-            if(state is GetPatientDataSuccessState){
+            if (state is GetPatientDataSuccessState) {
               var model = state.patient;
-              nameController.text= model.name!;
+              nameController.text = model.name!;
               phoneController.text = model.phone!;
 
-
               return Scaffold(
-
                 body: Container(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: ListView(
                     children: [
                       Row(
-
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               flex: 1,
                               child: IconButton(
-                                icon: Icon(Icons.arrow_back_ios),
+                                icon: const Icon(Icons.arrow_back_ios),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -58,8 +51,7 @@ class profileScreen extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   "Edit Profile",
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 25),
+                                  style: GoogleFonts.montserrat(fontSize: 25),
                                 ),
                               ),
                             ),
@@ -69,26 +61,23 @@ class profileScreen extends StatelessWidget {
                                   child: Text("Edit",
                                       style: GoogleFonts.montserrat(
                                         fontSize: 20,
-                                        color: Colors.teal,)),
+                                        color: Colors.teal,
+                                      )),
                                   onPressed: () {
-
                                     AppCubit.get(context).uploadProfileImage(
                                       name: nameController.text,
-                                      phone:phoneController.text,
-
-
-                                    ); }
-                              ),
+                                      phone: phoneController.text,
+                                    );
+                                  }),
                             )
-                          ]
-                      ),
-                      SizedBox(
+                          ]),
+                      const SizedBox(
                         height: 30,
                       ),
                       Center(
                         child: Stack(
                           children: [
-                            Container(
+                            SizedBox(
                               width: 130,
                               height: 130,
                               // decoration: BoxDecoration(
@@ -115,18 +104,18 @@ class profileScreen extends StatelessWidget {
                               child: CircleAvatar(
                                 radius: 64.0,
                                 backgroundColor:
-                                Theme.of(context).scaffoldBackgroundColor,
-                                child: state.patient.profileimage!.startsWith('https')?CircleAvatar(
-                                    radius: 60.0,
-                                    backgroundImage: NetworkImage(state.patient.profileimage!)
-
-                                ):CircleAvatar(
-                                    radius: 60.0,
-                                    backgroundImage:  FileImage(File(state.patient.profileimage!))
-
-                                ),
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                child: state.patient.profileimage!
+                                        .startsWith('https')
+                                    ? CircleAvatar(
+                                        radius: 60.0,
+                                        backgroundImage: NetworkImage(
+                                            state.patient.profileimage!))
+                                    : CircleAvatar(
+                                        radius: 60.0,
+                                        backgroundImage: FileImage(
+                                            File(state.patient.profileimage!))),
                               ),
-
                             ),
                             Positioned(
                                 bottom: 0,
@@ -138,17 +127,15 @@ class profileScreen extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     border: Border.all(
                                       width: 3,
-                                      color: Theme
-                                          .of(context)
+                                      color: Theme.of(context)
                                           .scaffoldBackgroundColor,
                                     ),
                                     color: Colors.white,
                                   ),
-                                  child:
-                                  IconButton(
-                                    icon: Icon(Icons.camera_alt_outlined),
+                                  child: IconButton(
+                                    icon: const Icon(Icons.camera_alt_outlined),
                                     color: Colors.teal,
-                                    onPressed: (){
+                                    onPressed: () {
                                       AppCubit.get(context).getProfileImage();
                                     },
                                   ),
@@ -156,13 +143,11 @@ class profileScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 35,
                       ),
                       defaultFormField(
-
                         controller: nameController,
-
                         type: TextInputType.name,
                         label: 'NAME',
                         prefix: Icons.person,
@@ -173,7 +158,6 @@ class profileScreen extends StatelessWidget {
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       defaultFormField(
-
                         controller: phoneController,
                         type: TextInputType.phone,
                         label: 'PHONE',
@@ -184,40 +168,32 @@ class profileScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
-
-
-                      SizedBox(
+                      const SizedBox(
                         height: 35,
                       ),
                       defaultButton(size.width, 50.0, "Logout", false, () {
-                        print(nameController.text);
+                        BlocProvider.of<AppCubit>(context).logout();
                       })
                     ],
                   ),
                 ),
               );
-            }
-            else if(state is GetPatientDataLoadingState){
-              return Center(
+            } else if (state is GetPatientDataLoadingState) {
+              return const Center(
                 child: CircularProgressIndicator(),
               );
-            }
-            else if(state is GetPatientDataErrorState ){
+            } else if (state is GetPatientDataErrorState) {
               return Center(
                 child: Text(state.error),
               );
-            }
-            else if (state is UpdatePatientDataErrorState){
+            } else if (state is UpdatePatientDataErrorState) {
               return Center(
                 child: Text(state.error),
               );
+            } else {
+              return const SizedBox();
             }
-            else{
-              return SizedBox();
-            }
-
           },
-        )
-    );
+        ));
   }
 }

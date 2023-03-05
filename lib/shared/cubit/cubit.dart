@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,11 +11,9 @@ import '../../models/Appointment.dart';
 import '../../models/patient.dart';
 
 class AppCubit extends Cubit<AppStates> {
-  AppCubit() :super(AppInitalState());
+  AppCubit() : super(AppInitalState());
 
   static AppCubit get(context) => BlocProvider.of(context);
-
-
 
   PatientModel model = PatientModel();
   List<QueryDocumentSnapshot<Map<String, dynamic>>> data = [];
@@ -26,63 +23,51 @@ class AppCubit extends Cubit<AppStates> {
 
     emit(GetPatientDataLoadingState());
 
-    FirebaseFirestore.instance.collection('Patients')
-        .where('uId', isEqualTo: userid).
-    get()
+    FirebaseFirestore.instance
+        .collection('Patients')
+        .where('uId', isEqualTo: userid)
+        .get()
         .then((value) {
       print(value.docs.first.data());
       data = value.docs;
-      if (data.isEmpty ) {
+      if (data.isEmpty) {
         emit(GetPatientDataErrorState('User Not Found'));
-      }
-      else {
+      } else {
         model = PatientModel.fromdoc(data.first);
-        if(model !=null){
+        if (model != null) {
           emit(GetPatientDataSuccessState(patient: model));
-        }else{
+        } else {
           emit(GetPatientDataErrorState('User Not Found'));
         }
-
-
       }
-    })
-
-        .catchError((error) {
+    }).catchError((error) {
       emit(GetPatientDataErrorState(error.toString()));
-    }
-    );
-
+    });
   }
 
   late File profileimage;
   var picker = ImagePicker();
-  Future<void> getProfileImage()async{
+  Future<void> getProfileImage() async {
     emit(GetPatientDataLoadingState());
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if(pickedFile != null){
+    if (pickedFile != null) {
       profileimage = File(pickedFile.path);
 
       print(profileimage.path);
-      model=model.copyWith(profileimage: profileimage.path);
+      model = model.copyWith(profileimage: profileimage.path);
       print(model.profileimage);
       emit(ProfileImagePickedSuccessState());
       emit(GetPatientDataSuccessState(patient: model));
-
-    }
-    else{
-
+    } else {
       emit(GetPatientDataSuccessState(patient: model));
-
     }
-
   }
 
   Future<void> uploadProfileImage({
     required String name,
     required String phone,
-
   }) async {
-    if(profileimage!=null){
+    if (profileimage != null) {
       // upload image only if there is file
       emit(UpdatePatientDataLoadingState());
 
@@ -93,9 +78,11 @@ class AppCubit extends Cubit<AppStates> {
       String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
 
       Reference referenceRoot = FirebaseStorage.instance.ref();
-      Reference referenceDirImages = referenceRoot.child('patient_profileimages');
-      Reference referenceImageToUpload =referenceDirImages.child(uniqueFileName);
-      try{
+      Reference referenceDirImages =
+          referenceRoot.child('patient_profileimages');
+      Reference referenceImageToUpload =
+          referenceDirImages.child(uniqueFileName);
+      try {
         await referenceImageToUpload.putFile(File(profileimage.path));
         String url = await referenceImageToUpload.getDownloadURL();
         editData(
@@ -103,11 +90,7 @@ class AppCubit extends Cubit<AppStates> {
           phone: phone,
           profile_image: url,
         );
-
-      }
-      catch (error){
-
-      }
+      } catch (error) {}
       // value.ref.getDownloadURL().then((value) {
       //   print(value);
       //   editData(name: name,
@@ -123,44 +106,45 @@ class AppCubit extends Cubit<AppStates> {
       // // ).catchError((error){
       // //   emit(UpdateDentistDataErrorState(error.toString()));
       // });
-    }else{
+    } else {
       emit(UpdatePatientDataLoadingState());
       editData(
         name: name,
         phone: phone,
-
       );
-
     }
-
   }
 
+  void logout() {
+    FirebaseAuth.instance.signOut();
+  }
 
   void editData({
     required String name,
     required String phone,
     String? profile_image,
-
-  }){
-
-    PatientModel patient= PatientModel(
+  }) {
+    PatientModel patient = PatientModel(
       name: name,
       phone: phone,
-      profileimage: profile_image??model.profileimage,
+      profileimage: profile_image ?? model.profileimage,
       email: model.email,
       uId: model.uId,
       docid: model.docid,
     );
-    FirebaseFirestore.instance.collection('Patients')
-        .doc(model.uId).update(patient.toMap()).then((value) {
+    FirebaseFirestore.instance
+        .collection('Patients')
+        .doc(model.uId)
+        .update(patient.toMap())
+        .then((value) {
       getUserData();
-    }).catchError((error){
+    }).catchError((error) {
       emit(UpdatePatientDataErrorState(error.toString()));
     });
   }
 
-  void getAllDentists(){
-    List<Map<String, dynamic>> Alldentists= [];
+  void getAllDentists() {
+    List<Map<String, dynamic>> Alldentists = [];
     // final userid = FirebaseAuth.instance.currentUser!.uid;
     var collection = FirebaseFirestore.instance.collection('Dentists');
     collection.snapshots().listen((querySnapshot) {
@@ -168,10 +152,10 @@ class AppCubit extends Cubit<AppStates> {
         Alldentists.add(doc.data());
       }
 
-      emit(GetDentistDataSuccessState(dentists:Alldentists));
+      emit(GetDentistDataSuccessState(dentists: Alldentists));
+    });
+  }
 
-     });
-   }
   CalendarFormat format = CalendarFormat.month;
 
   DateTime focusDay = DateTime.now();
@@ -218,37 +202,25 @@ class AppCubit extends Cubit<AppStates> {
     required String time,
     required String day,
     // String? docId,
+  }) {
+    Appointment appmodel = Appointment(
+      patientemail: '${FirebaseAuth.instance.currentUser?.email}',
+      dentistname: dentistname,
+      date: date,
+      time: time,
+      day: day,
+      docId: app_model.docId,
+    );
 
-  })
-
-  {
-
-
-      Appointment appmodel = Appointment(
-        patientemail: '${FirebaseAuth.instance.currentUser?.email}',
-        dentistname: dentistname,
-        date: date,
-        time: time,
-        day: day,
-        docId: app_model.docId ,
-      );
-
-      FirebaseFirestore.instance
-          .collection('Appointments')
-          .doc()
-          .set(appmodel.toMap())
-          .then((value) {
-
-        emit(pickedAppointmentSuccessState());
-      })
-          .catchError((error) {
-        print(error.toString());
-        emit(pickedAppointmentErrorState(error.toString()));
-      });
-
-
-
+    FirebaseFirestore.instance
+        .collection('Appointments')
+        .doc()
+        .set(appmodel.toMap())
+        .then((value) {
+      emit(pickedAppointmentSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(pickedAppointmentErrorState(error.toString()));
+    });
   }
-
-
 }
