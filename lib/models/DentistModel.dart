@@ -11,10 +11,10 @@ class DentistModel {
   final String? uId;
   final String? docid;
   final String? profileimage;
-
+  final String? deviceToken;
 
   DentistModel({
-
+    this.deviceToken,
     this.name,
     this.email,
     this.phone,
@@ -27,25 +27,25 @@ class DentistModel {
     this.profileimage,
   });
 
-  factory DentistModel.fromdoc(QueryDocumentSnapshot<Map<String, dynamic>> doc){
-
+  factory DentistModel.fromdoc(
+      QueryDocumentSnapshot<Map<String, dynamic>> doc) {
     final dentist = DentistModel(
-      name :doc.data()!['name'],
-      email :doc.data()!['email'],
-      phone :doc.data()!['phone'],
-      medicalID :doc.data()!['medicalID'],
-      socialnumber :doc.data()!['socialnumber'],
-      clinicname: doc.data()!['clinicname'],
-      clinicaddress: doc.data()!['clinicaddress'],
-      uId :doc.data()!['uId'],
-      docid :doc.id,
-      profileimage: doc.data()!['profileimage'],
+      name: doc.data()['name'],
+      email: doc.data()['email'],
+      phone: doc.data()['phone'],
+      medicalID: doc.data()['medicalID'],
+      socialnumber: doc.data()['socialnumber'],
+      clinicname: doc.data()['clinicname'],
+      clinicaddress: doc.data()['clinicaddress'],
+      uId: doc.data()['uId'],
+      docid: doc.id,
+      profileimage: doc.data()['profileimage'],
     );
     return dentist;
   }
 
-
-  DentistModel copyWith({String? name,
+  DentistModel copyWith({
+    String? name,
     String? email,
     String? phone,
     String? medicalID,
@@ -55,36 +55,32 @@ class DentistModel {
     String? uId,
     String? docid,
     String? profileimage,
-  })=>DentistModel(
-      name: name??this.name,
-      email: email??this.email,
-      profileimage: profileimage??this.profileimage,
-      uId: uId??this.uId,
-      medicalID: medicalID??this.medicalID,
-      docid: docid??this.docid,
-      socialnumber: socialnumber??this.socialnumber,
-      clinicaddress: clinicaddress??this.clinicaddress,
-      clinicname: clinicname??this.clinicname,
-      phone: phone??this.phone);
+  }) =>
+      DentistModel(
+          name: name ?? this.name,
+          email: email ?? this.email,
+          profileimage: profileimage ?? this.profileimage,
+          uId: uId ?? this.uId,
+          medicalID: medicalID ?? this.medicalID,
+          docid: docid ?? this.docid,
+          socialnumber: socialnumber ?? this.socialnumber,
+          clinicaddress: clinicaddress ?? this.clinicaddress,
+          clinicname: clinicname ?? this.clinicname,
+          phone: phone ?? this.phone);
 
-
-
-  Map<String, dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     return {
-
       'name': name,
       'email': email,
-      'phone': phone??'',
-      'medicalID': medicalID??'',
-      'socialnumber': socialnumber??'',
-      'clinicname': clinicname??'',
-      'clinicaddress': clinicaddress??'',
+      'phone': phone ?? '',
+      'medicalID': medicalID ?? '',
+      'socialnumber': socialnumber ?? '',
+      'clinicname': clinicname ?? '',
+      'clinicaddress': clinicaddress ?? '',
       'uId': uId,
-      'docid':docid,
-      'profileimage': profileimage??'https://www.gentledental.com/sites/default/files/2020-03/generic-doctor-profile.jpg'
-
+      'docid': docid,
+      'profileimage': profileimage ??
+          'https://www.gentledental.com/sites/default/files/2020-03/generic-doctor-profile.jpg'
     };
   }
-
-
 }
