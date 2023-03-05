@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:idental_n_patient/modules/Appointment/try.dart';
 import 'package:idental_n_patient/modules/login/login.dart';
 import 'package:idental_n_patient/models/slide.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,7 +8,11 @@ import 'package:idental_n_patient/modules/signup/signup.dart';
 import 'package:idental_n_patient/widgets/slide_dots.dart';
 import 'package:idental_n_patient/widgets/slide_item.dart';
 
+import 'shared/notification_helper.dart';
+
 class GettingStartedScreen extends StatefulWidget {
+  const GettingStartedScreen({super.key});
+
   @override
   _GettingStartedScreenState createState() => _GettingStartedScreenState();
 }
@@ -20,10 +23,9 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
 
   @override
   void initState() {
-
     super.initState();
 
-    Timer.periodic(Duration(seconds: 5), (Timer timer) {
+    Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       if (_currentPage < 2) {
         _currentPage++;
       } else {
@@ -32,12 +34,12 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
 
       _pageController.animateToPage(
         _currentPage,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
       );
     });
 
-    // registerNotification();
+    NotificationHelper.registerNotification();
   }
 
   @override
@@ -94,37 +96,37 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              defaultButton(250.0, 50.0, 'Create your account',true,(){Navigator.push(
-              context,
-              MaterialPageRoute(
-              builder: (context) => Signup(),
-              ),
-                 );}),
+              defaultButton(250.0, 50.0, 'Create your account', true, () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Signup(),
+                  ),
+                );
+              }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
                     'Have an account?',
-                      style: GoogleFonts.montserrat(
-                        fontSize: 15,
-                        color: Colors.grey),
+                    style: GoogleFonts.montserrat(
+                        fontSize: 15, color: Colors.grey),
                   ),
                   TextButton(
                     child: Text(
                       'Login',
-                        style: GoogleFonts.montserrat(
-                            color: Colors.teal,
-                            fontSize: 15),
+                      style: GoogleFonts.montserrat(
+                          color: Colors.teal, fontSize: 15),
                     ),
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Login(),
-                              ),
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Login(),
+                        ),
                       );
                     },
                   ),

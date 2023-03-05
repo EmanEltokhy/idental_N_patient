@@ -1,10 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-
 class ScheduleCard extends StatelessWidget {
-  const ScheduleCard({required this.date, required this.day, required this.time});
+  const ScheduleCard(
+      {super.key, required this.date, required this.day, required this.time});
 
   final String date;
   final String day;
@@ -62,27 +60,34 @@ class ScheduleCard extends StatelessWidget {
 }
 
 class try2 extends StatelessWidget {
+  const try2({super.key});
+
   // const try2({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body:
-      SafeArea(
+      body: SafeArea(
         child: Column(
           children: [
-            SizedBox(height: 20,),
-            Text('Upcoming Appointments',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
-            SizedBox(height: 40,),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'Upcoming Appointments',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
             ListView.separated(
               primary: false,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               itemCount: 1,
               separatorBuilder: (BuildContext context, int index) =>
-                  Divider(indent: 3),
+                  const Divider(indent: 3),
               itemBuilder: (BuildContext context, int index) => Card(
                 shape: RoundedRectangleBorder(
                   side: const BorderSide(
@@ -90,7 +95,8 @@ class try2 extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                margin: true ? const EdgeInsets.only(bottom: 20) : EdgeInsets.zero,
+                margin:
+                    true ? const EdgeInsets.only(bottom: 20) : EdgeInsets.zero,
                 child: Padding(
                   padding: const EdgeInsets.all(15),
                   child: Column(
@@ -98,7 +104,7 @@ class try2 extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             backgroundImage: NetworkImage(
                                 'https://th.bing.com/th/id/OIP.i2z-rKyDkWNqHIDo_-PJ8AHaEr?pid=ImgDet&rs=1'),
                           ),
@@ -107,20 +113,20 @@ class try2 extends StatelessWidget {
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 'mohamed',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.teal,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 height: 5,
                               ),
                               Text(
                                 'dentist',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -133,7 +139,7 @@ class try2 extends StatelessWidget {
                       const SizedBox(
                         height: 15,
                       ),
-                      ScheduleCard(
+                      const ScheduleCard(
                         date: '16/2/2023',
                         day: 'Monday',
                         time: '08:30 PM',
@@ -179,42 +185,6 @@ class try2 extends StatelessWidget {
           ],
         ),
       ),
-
     );
-  }
-}
-
-
-
-void registerNotification() async {
-  // // 1. Initialize the Firebase app
-  // await Firebase.initializeApp();
-
-  print('called');
-  // 2. Instantiate Firebase Messaging
-  FirebaseMessaging _messaging = FirebaseMessaging.instance;
-
-  // 3. On iOS, this helps to take the user permissions
-  NotificationSettings settings = await _messaging.requestPermission(
-    alert: true,
-    badge: true,
-    provisional: false,
-    sound: true,
-  );
-
-
-  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    print('User granted permission');
-
-    // For handling the received notifications
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // Parse the message received
-      print('${message.messageId}');
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('on message openedapp');
-    });
-  } else {
-    print('User declined or has not accepted permission');
   }
 }
