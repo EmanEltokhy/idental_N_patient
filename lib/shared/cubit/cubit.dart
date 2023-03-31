@@ -156,6 +156,22 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+  void getPatientReports(){
+    List<Map<String, dynamic>> Allreports= [];
+    final useremail = FirebaseAuth.instance.currentUser!.email;
+    var collection = FirebaseFirestore.instance.collection('Reports');
+    collection.where('patientemail', isEqualTo:useremail ).snapshots().listen((querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        Allreports.add(doc.data());
+
+      }
+
+      emit(GetReportSuccessState(Allreports));
+
+    });
+  }
+
+
   CalendarFormat format = CalendarFormat.month;
 
   DateTime focusDay = DateTime.now();

@@ -20,6 +20,14 @@ class GetPatientDataErrorState extends AppStates{
   GetPatientDataErrorState(this.error);
 }
 
+class  GetReportSuccessState extends AppStates{
+  List<Map<String, dynamic>> reports;
+  GetReportSuccessState(this.reports);
+}
+class GetReportErrorState extends AppStates{
+  final String error;
+  GetReportErrorState(this.error);
+}
 class ProfileImagePickedSuccessState extends AppStates{}
 
 class ProfileImagePickedErrorState extends AppStates{}

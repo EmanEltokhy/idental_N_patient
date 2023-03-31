@@ -132,7 +132,7 @@ Widget defaultFormField({
 Widget buildReportItem({
   required context,
   required String dentistname,
-  required String patientname,
+  required String patientemail,
   required String observation,
 }) => Card(
   clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -186,7 +186,7 @@ Widget buildReportItem({
           ),
         ),
         Text(
-          'Patient Name: ${patientname}',
+          'Patient Name: ${patientemail}',
 
 
         ),
