@@ -56,6 +56,8 @@ class PatientModel {
   );
 
   Map<String, dynamic> toMap() {
+    print("Device Token ****************");
+    print(NotificationHelper.deviceToken);
     return {
       'name': name,
       'email': email,

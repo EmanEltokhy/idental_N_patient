@@ -27,9 +27,11 @@ class NotificationHelper {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
+      _getToken(FirebaseMessaging.instance);
 
       // For handling the received notifications
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+
         BigTextStyleInformation bigTextStyleInformation =
             BigTextStyleInformation(
           message.notification!.body!,
@@ -58,8 +60,8 @@ class NotificationHelper {
     }
   }
   static String? deviceToken;
-  final FirebaseMessaging messaging = FirebaseMessaging.instance;
-  void getToken() async {
+  // final FirebaseMessaging messaging = FirebaseMessaging.instance;
+  static void _getToken(FirebaseMessaging  messaging) async {
     deviceToken = await messaging.getToken();
     print(deviceToken); // print the device token string
   }
