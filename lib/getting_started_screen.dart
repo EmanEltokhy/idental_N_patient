@@ -41,6 +41,7 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
 
     NotificationHelper.registerNotification();
 
+
   }
 
   @override
@@ -100,11 +101,15 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
               const SizedBox(
                 height: 20,
               ),
+
               defaultButton(250.0, 50.0, 'Create your account', true, () {
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => Signup(),
+
+
                   ),
                 );
               }),

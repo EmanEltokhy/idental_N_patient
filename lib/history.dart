@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
-import 'package:idental/shared/components/components.dart';
-import 'package:idental/shared/cubits/cubits.dart';
-import 'package:idental/shared/cubits/states.dart';
 import 'package:idental_n_patient/shared/components/components.dart';
+import 'package:idental_n_patient/shared/cubit/cubit.dart';
+import 'package:idental_n_patient/shared/cubit/states.dart';
 
 class HistoryScreen extends StatelessWidget {
 
@@ -13,7 +12,7 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return BlocProvider(create: (BuildContext context) => AppCubit()..getReports(),
+    return BlocProvider(create: (BuildContext context) => AppCubit()..getPatientReports(),
         child: BlocConsumer<AppCubit,AppStates>(
           listener: (context,state){},
           builder: (context, state)

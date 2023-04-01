@@ -13,7 +13,10 @@ class NotificationHelper {
     final intializationSettings = InitializationSettings(
         android: const AndroidInitializationSettings('@mipmap/ic_launcher'),
         iOS: DarwinInitializationSettings(
-            onDidReceiveLocalNotification: (id, title, body, payload) {}));
+            onDidReceiveLocalNotification: (id, title, body, payload) {
+
+
+            }));
 
     notificationsPlugin.initialize(intializationSettings);
 
@@ -46,9 +49,10 @@ class NotificationHelper {
             NotificationDetails(
                 android: AndroidNotificationDetails('idental', 'idental',
                     styleInformation: bigTextStyleInformation,
-                    importance: Importance.max,
+                    importance: Importance.high,
                     priority: Priority.high,
-                    ticker: 'ticker')));
+                    ticker: 'ticker',
+                playSound: true)));
 
         // Parse the message received
       });
@@ -65,4 +69,18 @@ class NotificationHelper {
     deviceToken = await messaging.getToken();
     print(deviceToken); // print the device token string
   }
+
+  static sendNotification(String token) async {
+print("calleddd");
+    await FirebaseMessaging.instance.sendMessage(
+      data: <String,String>{
+        'title': "test",
+        "body": "new Appointment"
+      },
+      to: token
+
+
+    );
+  }
+
 }

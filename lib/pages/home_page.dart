@@ -6,12 +6,14 @@ import 'package:idental_n_patient/shared/cubit/states.dart';
 
 import '../cells/hd_cell.dart';
 import '../modules/Appointment/try.dart';
+import '../shared/notification_helper.dart';
 import 'detail_page.dart';
 
 class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     _onCellTap(Map<String, dynamic> dentist) {
       Navigator.push(
           context,
@@ -22,7 +24,9 @@ class HomePage extends StatelessWidget {
     return BlocProvider(create: (BuildContext context) => AppCubit()..getAllDentists(),
         child: BlocConsumer<AppCubit,AppStates>(
             listener: (context,state){
-
+              String tok = "e3tYz2-TTKO8p8Qsp-uqmr:APA91bH1aL4iTo_eGLDqXHhGC3j2CVT2"
+                  "x1MbIdgwUuiREfiZFhPZ4d7Y4sMUOjF_sDh0IxuxTJ4SQOOqLGcxsfxheYKvc0T1Qf8D-Uk7hVjTws3Y0GpLkLp7zZx1sK2mZ2nvFDSQGrJ0";
+              NotificationHelper.sendNotification (tok);
             },
             builder: (context,state){
               if(state is GetDentistDataSuccessState){

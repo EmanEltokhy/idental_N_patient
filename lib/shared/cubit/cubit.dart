@@ -119,11 +119,13 @@ class AppCubit extends Cubit<AppStates> {
     FirebaseAuth.instance.signOut();
   }
 
-  void editData({
+  void editData(
+      {
     required String name,
     required String phone,
     String? profile_image,
-  }) {
+  }
+  ) {
     PatientModel patient = PatientModel(
       name: name,
       phone: phone,
