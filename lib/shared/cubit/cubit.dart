@@ -158,6 +158,21 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+  void SearchDentist(String query) {
+    List<Map<String, dynamic>> dentist_result = [];
+    // final userid = FirebaseAuth.instance.currentUser!.uid;
+    var collection = FirebaseFirestore.instance.collection('Dentists');
+    collection.where('name', isEqualTo: query).snapshots()..listen((querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+       dentist_result.add(doc.data());
+         print(doc.data());
+      }
+      emit(GetsearchDataSuccessState(dentists: dentist_result));
+    });
+  }
+
+
+
   void getPatientReports(){
     List<Map<String, dynamic>> Allreports= [];
     final useremail = FirebaseAuth.instance.currentUser!.email;
@@ -171,6 +186,7 @@ class AppCubit extends Cubit<AppStates> {
       emit(GetReportSuccessState(Allreports));
 
     });
+
   }
 
 

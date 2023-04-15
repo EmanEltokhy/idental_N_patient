@@ -39,7 +39,7 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
       );
     });
 
-    NotificationHelper.registerNotification();
+
 
 
   }
@@ -58,6 +58,7 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String? tokenn ="e3tYz2-TTKO8p8Qsp-uqmr:APA91bH1aL4iTo_eGLDqXHhGC3j2CVT2x1MbIdgwUuiREfiZFhPZ4d7Y4sMUOjF_sDh0IxuxTJ4SQOOqLGcxsfxheYKvc0T1Qf8D-Uk7hVjTws3Y0GpLkLp7zZx1sK2mZ2nvFDSQGrJ0";
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -103,15 +104,17 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
               ),
 
               defaultButton(250.0, 50.0, 'Create your account', true, () {
-
+                NotificationHelper.sendPushMessage(tokenn, "hello", "Notifaction test");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => Signup(),
 
 
+
                   ),
                 );
+
               }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

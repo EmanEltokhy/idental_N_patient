@@ -24,12 +24,12 @@ class HomePage extends StatelessWidget {
     return BlocProvider(create: (BuildContext context) => AppCubit()..getAllDentists(),
         child: BlocConsumer<AppCubit,AppStates>(
             listener: (context,state){
-              String tok = "e3tYz2-TTKO8p8Qsp-uqmr:APA91bH1aL4iTo_eGLDqXHhGC3j2CVT2"
-                  "x1MbIdgwUuiREfiZFhPZ4d7Y4sMUOjF_sDh0IxuxTJ4SQOOqLGcxsfxheYKvc0T1Qf8D-Uk7hVjTws3Y0GpLkLp7zZx1sK2mZ2nvFDSQGrJ0";
-              NotificationHelper.sendNotification (tok);
+
             },
             builder: (context,state){
+
               if(state is GetDentistDataSuccessState){
+
                 var _hDoctors = state.dentists;
                 return Scaffold(
                   backgroundColor: Colors.grey[200],
@@ -51,7 +51,8 @@ class HomePage extends StatelessWidget {
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 16),
                           child: Center(
-                            child: const TextField(
+                            child:  TextField(
+
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Search",
@@ -59,6 +60,9 @@ class HomePage extends StatelessWidget {
                                   Icons.search,
                                 ),
                               ),
+                                onChanged: (val){
+                                AppCubit.get(context).SearchDentist(val);
+                                },
                             ),
                           ),
                         ),
@@ -112,6 +116,74 @@ class HomePage extends StatelessWidget {
                             image: _hDoctors[index]['profileimage'],
 
                             onTap: () => _onCellTap(_hDoctors[index]),
+                          ),
+                        ),
+                      ],
+
+                    ),
+                  ),
+
+
+
+
+                );
+              }
+              else if(state is GetsearchDataSuccessState){
+                var result = state.dentists;
+                return Scaffold(
+
+                  backgroundColor: Colors.grey[200],
+                  body: SingleChildScrollView(
+                    // physics: BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipPath(
+                          clipper: DrawClip(),
+                          child: Container(
+                              color: Colors.teal[200],
+                              height: 200),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Center(
+                            child:  TextField(
+
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Search",
+                                icon: Icon(
+                                  Icons.search,
+                                ),
+                              ),
+                              onChanged: (val){
+                                AppCubit.get(context).SearchDentist(val);
+                              },
+                            ),
+                          ),
+                        ),
+
+
+                        SizedBox(height: 30,),
+
+
+                        ListView.separated(
+                          primary: false,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          padding: EdgeInsets.symmetric(horizontal: 24),
+                          itemCount: result.length,
+                          separatorBuilder: (BuildContext context, int index) =>
+                              Divider(indent: 3),
+                          itemBuilder: (BuildContext context, int index) => HDCell(
+                            name: result[index]['name'],
+                            image: result[index]['profileimage'],
+
+                            onTap: () => _onCellTap(result[index]),
                           ),
                         ),
                       ],

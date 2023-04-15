@@ -51,6 +51,10 @@ class GetDentistDataSuccessState extends AppStates{
   List<Map<String, dynamic>> dentists;
   GetDentistDataSuccessState({required this.dentists});
 }
+class GetsearchDataSuccessState extends AppStates{
+  List<Map<String, dynamic>> dentists;
+  GetsearchDataSuccessState({required this.dentists});
+}
 
 class ChangeClanderFormatState extends AppStates{
   final CalendarFormat format;

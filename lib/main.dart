@@ -1,15 +1,22 @@
 // @dart=2.9
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idental_n_patient/pages/home_page.dart';
 import 'package:idental_n_patient/shared/bloc_observer.dart';
 import './getting_started_screen.dart';
+import 'firebase_options.dart';
 import 'shared/notification_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  await NotificationHelper.registerNotification();
+  await NotificationHelper.initInfo();
+
   // NotificationHelper.registerNotification();
 
   Bloc.observer = MyBlocObserver();
@@ -33,7 +40,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       // home: DoctorDetailPage(),
-      home: const GettingStartedScreen(),
+      home: GettingStartedScreen(),
     );
   }
 }
