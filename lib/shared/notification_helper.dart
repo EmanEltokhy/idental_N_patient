@@ -98,49 +98,67 @@ class NotificationHelper {
     flutterlocalnotificationsplugin.initialize(initializtionSettings);
     FirebaseMessaging.onMessage.listen((RemoteMessage message)async {
       print(".......................onMessage.............");
-      print("onMessage: ${message.notification?.title}/${message.notification?.body}");
+      print("onMessage: ${message.notification?.title} /${message.notification?.body}");
       BigTextStyleInformation big = BigTextStyleInformation(
           message.notification!.body.toString(),htmlFormatBigText: true,
           contentTitle: message.notification!.title.toString(),htmlFormatContentTitle: true
       );
       AndroidNotificationDetails android = AndroidNotificationDetails(
-        'dbfood','dbfood',importance: Importance.high,
-        styleInformation:big,priority: Priority.high,playSound: false,
+        'idental','idental',
+        importance: Importance.high,
+        styleInformation:big,
+        priority: Priority.high,
+        playSound: false,
       );
       NotificationDetails platform = NotificationDetails(android: android);
-      await flutterlocalnotificationsplugin.show(0, message.notification?.title,message.notification?.body, platform,payload: message.data['body']);
+      await flutterlocalnotificationsplugin.show(
+          0,
+          message.notification?.title,
+          message.notification?.body,
+          platform,
+          payload: message.data['body'],
+      );
 
-    });
+    }
+    );
   }
 
-  static void sendPushMessage(String token, String body, String title) async {
+  static void sendPushMessage({required String token, required String body, required String title}) async {
      print('called');
     try{
+      http.Response responsee =
       await http.post(
           Uri.parse('https://fcm.googleapis.com/fcm/send'),
           headers: <String,String>{
             'Content-Type': 'application/json',
-            'Authorization': 'AAAA6Zvpk_I:APA91bHExSlk_HkatYDfXO_BY4heJQhBMrt8NHBtgLZrDzsesUELp79VggzxiEtfsrxabqb-A_bZ9-sR6qum6PkIE'
-                'vekQVa6BITVqDQs7HfrWHbBfUuE-9xTCRPLJAnC0FiPkcvf4WKg'
+            'Authorization': 'key=AAAA6Zvpk_I:APA91bHExSlk_HkatYDfXO_BY4heJQhBMrt8NHBtgLZrDzsesUELp79VggzxiEtfsrxabqb-A_bZ9-sR6qum6PkIEvekQVa6BITVqDQs7HfrWHbBfUuE-9xTCRPLJAnC0FiPkcvf4WKg'
           },
           body: jsonEncode(
               <String,dynamic>{
                 'priority':'high',
+
                 'data':<String,dynamic>{
                   'click_action':'FLUTTER_NOTIFICATION_CLICK',
                   'status': 'done',
                   'body': body,
                   'title':title,
+
+
                 },
+
                 "notification": <String,dynamic>{
                   "title":title,
                   "body":body,
-                  "android_channel_id":"dbfood"
+                  "android_channel_id":"idental"
                 },
                 "to":token,
               }
           )
+
       );
+
+      print("+++++++++++++++++++");
+      print(responsee.body);
     }catch(e){
       if(kDebugMode){
         print("error push notification");

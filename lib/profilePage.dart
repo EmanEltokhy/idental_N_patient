@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:idental_n_patient/shared/components/components.dart';
 import 'package:idental_n_patient/shared/cubit/cubit.dart';
 import 'package:idental_n_patient/shared/cubit/states.dart';
+import 'package:idental_n_patient/shared/notification_helper.dart';
 
 class profileScreen extends StatelessWidget {
   const profileScreen({super.key});
@@ -16,11 +17,12 @@ class profileScreen extends StatelessWidget {
     bool edit = true;
     var nameController = TextEditingController();
     var phoneController = TextEditingController();
-
     return BlocProvider(
         create: (BuildContext context) => AppCubit()..getUserData(),
         child: BlocConsumer<AppCubit, AppStates>(
-          listener: (context, state) {},
+          listener: (context, state) {
+
+          },
           builder: (context, state) {
             Size size = MediaQuery.of(context).size;
             if (state is GetPatientDataSuccessState) {

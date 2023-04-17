@@ -4,9 +4,11 @@ import 'package:idental_n_patient/pages/home_page.dart';
 import '../modules/Appointment/booking_page.dart';
 import '../cells/detail_cell.dart';
 import '../shared/components/components.dart';
+import '../shared/notification_helper.dart';
 import '../utils/he_color.dart';
 
 class Detailpage extends StatelessWidget {
+
   final Map<String, dynamic> dentist;
   const Detailpage({required this.dentist});
   /// App Bar
@@ -161,11 +163,13 @@ class Detailpage extends StatelessWidget {
                   SizedBox(
                     height: 32,
                   ),
+
                   defaultButton(size.width, 50.0, 'Book Appointment', 0, (){
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BookingPage(dintestname: '${dentist['name']}',),
+                        builder: (context) => BookingPage(dintestname: '${dentist['name']}',deviceToken:'${dentist['devicetoken']}', dintestemail: '${dentist['email']}'),
                       ),
                     );
                   })

@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idental_n_patient/modules/Appointment/try.dart';
+import 'package:idental_n_patient/shared/notification_helper.dart';
 import 'package:idental_n_patient/success.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../shared/cubit/cubit.dart';
@@ -12,7 +14,9 @@ import '../../button.dart';
 class BookingPage extends StatelessWidget {
   // const BookingPage({Key? key}) : super(key: key);
   final String? dintestname;
-  const BookingPage({this.dintestname});
+  final String? dintestemail;
+  final String? deviceToken;
+  const BookingPage( {this.dintestname,this.dintestemail ,this.deviceToken});
   @override
   Widget build(BuildContext context) {
     // declaration
@@ -168,10 +172,16 @@ class BookingPage extends StatelessWidget {
                            AppCubit.get(context).AppointmentCreate(
 
                                dentistname: dintestname,
+                               dentistemail: dintestemail,
                                date: getDate,
                                time: getTime,
                                day: getDay,
                                );
+
+  NotificationHelper.sendPushMessage(
+    token:deviceToken!,
+    body:'${FirebaseAuth.instance.currentUser?.email}'+" has booked  an appointment on "+ '${getDate}',
+    title: 'New Appointment');
 
                             Navigator.push(
                               context,

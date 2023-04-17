@@ -155,6 +155,7 @@ class AppCubit extends Cubit<AppStates> {
       }
 
       emit(GetDentistDataSuccessState(dentists: Alldentists));
+
     });
   }
 
@@ -232,6 +233,8 @@ class AppCubit extends Cubit<AppStates> {
   void AppointmentCreate({
     String? patientemail,
     String? dentistname,
+    String? dentistemail,
+    String? status,
     required String date,
     required String time,
     required String day,
@@ -240,6 +243,8 @@ class AppCubit extends Cubit<AppStates> {
     Appointment appmodel = Appointment(
       patientemail: '${FirebaseAuth.instance.currentUser?.email}',
       dentistname: dentistname,
+      dentistemail: dentistemail,
+      status: status,
       date: date,
       time: time,
       day: day,
