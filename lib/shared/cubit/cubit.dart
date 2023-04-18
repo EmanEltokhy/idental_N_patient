@@ -239,7 +239,9 @@ class AppCubit extends Cubit<AppStates> {
     required String time,
     required String day,
     // String? docId,
-  }) {
+  })
+  {
+    String id =  FirebaseFirestore.instance.collection('Appointments').doc().id;
     Appointment appmodel = Appointment(
       patientemail: '${FirebaseAuth.instance.currentUser?.email}',
       dentistname: dentistname,
@@ -248,18 +250,39 @@ class AppCubit extends Cubit<AppStates> {
       date: date,
       time: time,
       day: day,
-      docId: app_model.docId,
+      docId: id,
     );
 
     FirebaseFirestore.instance
         .collection('Appointments')
-        .doc()
+        .doc(id)
         .set(appmodel.toMap())
         .then((value) {
       emit(pickedAppointmentSuccessState());
     }).catchError((error) {
       print(error.toString());
       emit(pickedAppointmentErrorState(error.toString()));
-    });
+    }
+    );
   }
+
+  void getUpcomingApps(){
+    List<Map<String, dynamic>> UpcomingAppointments= [];
+    final useremail = FirebaseAuth.instance.currentUser!.email;
+    var collection = FirebaseFirestore.instance.collection('Appointments');
+    collection.where('patientemail', isEqualTo:useremail ).snapshots().listen((querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        if(doc['status']=="Approved"){
+          UpcomingAppointments.add(doc.data());
+        }
+
+
+      }
+
+      emit(GetAppointmentsSuccessState(appointments: UpcomingAppointments));
+
+    });
+
+  }
+
 }

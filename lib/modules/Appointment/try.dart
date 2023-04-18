@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idental_n_patient/shared/cubit/cubit.dart';
+import 'package:idental_n_patient/shared/cubit/states.dart';
 
 class ScheduleCard extends StatelessWidget {
   const ScheduleCard(
@@ -66,125 +69,111 @@ class try2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              'Upcoming Appointments',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            ListView.separated(
-              primary: false,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              itemCount: 1,
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(indent: 3),
-              itemBuilder: (BuildContext context, int index) => Card(
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(
-                    color: Colors.grey,
+    return BlocProvider(create: (BuildContext context) => AppCubit()..getUpcomingApps() ,
+    child: BlocConsumer<AppCubit,AppStates>(
+      listener: (context,state){},
+      builder: (context,State){
+        if(State is GetAppointmentsSuccessState){
+          return Scaffold(
+            body: SafeArea(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 20,
                   ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                margin:
-                    true ? const EdgeInsets.only(bottom: 20) : EdgeInsets.zero,
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        children: [
-                          const CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                'https://th.bing.com/th/id/OIP.i2z-rKyDkWNqHIDo_-PJ8AHaEr?pid=ImgDet&rs=1'),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'mohamed',
-                                style: TextStyle(
-                                  color: Colors.teal,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                'dentist',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const ScheduleCard(
-                        date: '16/2/2023',
-                        day: 'Monday',
-                        time: '08:30 PM',
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      // doctor part
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Expanded(
-                      //       child: OutlinedButton(
-                      //         onPressed: () {},
-                      //         child: const Text(
-                      //           'Cancel',
-                      //           style: TextStyle(color: Colors.black),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //     const SizedBox(
-                      //       width: 20,
-                      //     ),
-                      //     Expanded(
-                      //       child: OutlinedButton(
-                      //         style: OutlinedButton.styleFrom(
-                      //           // backgroundColor: Config.primaryColor,
-                      //         ),
-                      //         onPressed: () {},
-                      //         child: const Text(
-                      //           'Reschedule',
-                      //           style: TextStyle(color: Colors.black),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                    ],
+                  const Text(
+                    'Upcoming Appointments',
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
-                ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  ListView.separated(
+                    primary: false,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    itemCount: State.appointments.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(indent: 3),
+                    itemBuilder: (BuildContext context, int index) => Card(
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                          color: Colors.grey,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      margin:
+                      true ? const EdgeInsets.only(bottom: 20) : EdgeInsets.zero,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              children: [
+                                const CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      'https://th.bing.com/th/id/OIP.i2z-rKyDkWNqHIDo_-PJ8AHaEr?pid=ImgDet&rs=1'),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children:  [
+                                    Text(
+                                      '${State.appointments[index]['dentistname']}',
+                                      style: TextStyle(
+                                        color: Colors.teal,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      'dentist',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                             ScheduleCard(
+                              date:'${State.appointments[index]['date']}',
+                              day:  '${State.appointments[index]['day']}',
+                              time:  '${State.appointments[index]['time']}',
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        }
+        else{
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+      },
+    ),);
+
   }
 }

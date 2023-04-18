@@ -142,13 +142,7 @@ class Login extends StatelessWidget {
                             child: defaultFormField(
                                 type: TextInputType.visiblePassword,
                                 controller: passwordController,
-                                // focusNode: passwordFocus,
-                                // onTap: (){
-                                //   setState(() {
-                                //     FocusScope.of(context).unfocus();
-                                //     FocusScope.of(context).requestFocus(passwordFocus);
-                                //   });
-                                // },
+
                                 style: GoogleFonts.montserrat(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
@@ -162,16 +156,7 @@ class Login extends StatelessWidget {
                                 } ),
                           ),
 
-                          // new FlutterPwValidator(
-                          //     controller: passwordController,
-                          //     minLength: 6,
-                          //     uppercaseCharCount: 1,
-                          //     specialCharCount: 1,
-                          //     width: 400,
-                          //     height: 90,
-                          //     onSuccess: (){},
-                          //     onFail: (){}
-                          // ),
+
                           SizedBox(
                             height: 30,
                           ),
@@ -184,12 +169,7 @@ class Login extends StatelessWidget {
                               LoginCubit.get(context).UserLogin(email: emailController.text,
                                   password: passwordController.text);
                             }
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => HomeScreen(),
-                            //   ),
-                            // );
+
                           }
                           ),
                         ],

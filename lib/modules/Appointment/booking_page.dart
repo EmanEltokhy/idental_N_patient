@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idental_n_patient/modules/Appointment/try.dart';
 import 'package:idental_n_patient/shared/notification_helper.dart';
 import 'package:idental_n_patient/success.dart';
 import 'package:table_calendar/table_calendar.dart';
