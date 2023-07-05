@@ -2,22 +2,12 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-/// Default [FirebaseOptions] for use with your Firebase apps.
-///
-/// Example:
-/// ```dart
-/// import 'firebase_options.dart';
-/// // ...
-/// await Firebase.initializeApp(
-///   options: DefaultFirebaseOptions.currentPlatform,
-/// );
-/// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
       throw UnsupportedError(
         'DefaultFirebaseOptions have not been configured for windows - '
-            'you can reconfigure this by running the FlutterFire CLI again.',
+        'you can reconfigure this by running the FlutterFire CLI again.',
       );
     }
     switch (defaultTargetPlatform) {
@@ -28,7 +18,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
-              'you can reconfigure this by running the FlutterFire CLI again.',
+          'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
         throw UnsupportedError(
@@ -48,7 +38,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey:'AIzaSyARDvED9ZezvmAjg9DWJ5xCysaItvqjY-4',
+    apiKey: 'AIzaSyARDvED9ZezvmAjg9DWJ5xCysaItvqjY-4',
     appId: '1:1003343156210:android:5366c3a0f794102140d16b',
     messagingSenderId: '1003343156210',
     projectId: 'idental-412f6',
@@ -61,8 +51,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '996387500617',
     projectId: 'fcmflutter33',
     storageBucket: 'fcmflutter33.appspot.com',
-    iosClientId: '996387500617-lhv02mjd72pptsdmjrgr70doi6ibaksq.apps.googleusercontent.com',
+    iosClientId:
+        '996387500617-lhv02mjd72pptsdmjrgr70doi6ibaksq.apps.googleusercontent.com',
     iosBundleId: 'com.example.fcmflutter',
   );
-
 }

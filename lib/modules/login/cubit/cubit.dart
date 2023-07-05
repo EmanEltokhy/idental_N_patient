@@ -10,28 +10,28 @@ class LoginCubit extends Cubit<LoginStates> {
   void UserLogin({
     required String email,
     required String password,
-  }){
+  }) {
     emit(LoginLoadinglState());
-    FirebaseAuth.instance.signInWithEmailAndPassword(email: email,
-        password: password).then((value){
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((value) {
       print(value.user!.email);
       print(value.user!.uid);
       emit(LoginSuccessState());
-    }).catchError((error){
+    }).catchError((error) {
       emit(LoginErorrState(error.toString()));
     });
   }
 
-
   IconData suffix = Icons.visibility_outlined;
-
 
   bool isPassword = true;
 
   void changePasswordVisibility() {
     isPassword = !isPassword;
-    suffix =
-    (isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined);
+    suffix = (isPassword
+        ? Icons.visibility_outlined
+        : Icons.visibility_off_outlined);
 
     emit(ChangePasswordVisibilityState());
   }

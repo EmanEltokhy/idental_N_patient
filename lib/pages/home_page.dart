@@ -1,48 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idental_n_patient/shared/components/components.dart';
 import 'package:idental_n_patient/shared/cubit/cubit.dart';
 import 'package:idental_n_patient/shared/cubit/states.dart';
-
 import '../cells/hd_cell.dart';
-import '../modules/Appointment/try.dart';
-import '../shared/notification_helper.dart';
 import 'detail_page.dart';
 
 class HomePage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     _onCellTap(Map<String, dynamic> dentist) {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Detailpage(dentist: dentist,),
+            builder: (context) => Detailpage(
+              dentist: dentist,
+            ),
           ));
     }
-    return BlocProvider(create: (BuildContext context) => AppCubit()..getAllDentists(),
-        child: BlocConsumer<AppCubit,AppStates>(
-            listener: (context,state){
 
-            },
-            builder: (context,state){
-
-              if(state is GetDentistDataSuccessState){
-
+    return BlocProvider(
+        create: (BuildContext context) => AppCubit()..getAllDentists(),
+        child: BlocConsumer<AppCubit, AppStates>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is GetDentistDataSuccessState) {
                 var _hDoctors = state.dentists;
                 return Scaffold(
                   backgroundColor: Colors.grey[200],
                   body: SingleChildScrollView(
-                    // physics: BouncingScrollPhysics(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipPath(
                           clipper: DrawClip(),
-                          child: Container(
-                              color: Colors.teal[200],
-                              height: 200),
+                          child:
+                              Container(color: Colors.teal[200], height: 200),
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -51,8 +45,7 @@ class HomePage extends StatelessWidget {
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 16),
                           child: Center(
-                            child:  TextField(
-
+                            child: TextField(
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Search",
@@ -60,49 +53,15 @@ class HomePage extends StatelessWidget {
                                   Icons.search,
                                 ),
                               ),
-                                onChanged: (val){
+                              onChanged: (val) {
                                 AppCubit.get(context).SearchDentist(val);
-                                },
+                              },
                             ),
                           ),
                         ),
-
-                        // Container(
-                        //   padding: EdgeInsets.symmetric(vertical: 10),
-                        //   color: Colors.teal[300],
-                        //   child: Column(
-                        //     children: [
-                        //       SizedBox(
-                        //         height: 64,
-                        //       ),
-                        //       Padding(
-                        //         padding: const EdgeInsets.all(15),
-                        //         child: Container(
-                        //           decoration: BoxDecoration(
-                        //             color: Colors.white,
-                        //             borderRadius: BorderRadius.circular(32),
-                        //           ),
-                        //           padding: EdgeInsets.symmetric(horizontal: 16),
-                        //           child: Center(
-                        //             child: const TextField(
-                        //               decoration: InputDecoration(
-                        //                 border: InputBorder.none,
-                        //                 hintText: "Search",
-                        //                 icon: Icon(
-                        //                   Icons.search,
-                        //                 ),
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       ),
-                        //       // Expanded(flex: 3,child: Placeholder()),
-                        //     ],
-                        //   ),
-                        // ),
-                        SizedBox(height: 30,),
-
-
+                        SizedBox(
+                          height: 30,
+                        ),
                         ListView.separated(
                           primary: false,
                           shrinkWrap: true,
@@ -111,38 +70,29 @@ class HomePage extends StatelessWidget {
                           itemCount: _hDoctors.length,
                           separatorBuilder: (BuildContext context, int index) =>
                               Divider(indent: 3),
-                          itemBuilder: (BuildContext context, int index) => HDCell(
-                            name: _hDoctors[index]['name'],
+                          itemBuilder: (BuildContext context, int index) =>
+                              HDCell(
+                            name: toCamelCase(_hDoctors[index]['name']),
                             image: _hDoctors[index]['profileimage'],
-
                             onTap: () => _onCellTap(_hDoctors[index]),
                           ),
                         ),
                       ],
-
                     ),
                   ),
-
-
-
-
                 );
-              }
-              else if(state is GetsearchDataSuccessState){
+              } else if (state is GetsearchDataSuccessState) {
                 var result = state.dentists;
                 return Scaffold(
-
                   backgroundColor: Colors.grey[200],
                   body: SingleChildScrollView(
-                    // physics: BouncingScrollPhysics(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipPath(
                           clipper: DrawClip(),
-                          child: Container(
-                              color: Colors.teal[200],
-                              height: 200),
+                          child:
+                              Container(color: Colors.teal[200], height: 200),
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -151,8 +101,7 @@ class HomePage extends StatelessWidget {
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 16),
                           child: Center(
-                            child:  TextField(
-
+                            child: TextField(
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Search",
@@ -160,17 +109,15 @@ class HomePage extends StatelessWidget {
                                   Icons.search,
                                 ),
                               ),
-                              onChanged: (val){
+                              onChanged: (val) {
                                 AppCubit.get(context).SearchDentist(val);
                               },
                             ),
                           ),
                         ),
-
-
-                        SizedBox(height: 30,),
-
-
+                        SizedBox(
+                          height: 30,
+                        ),
                         ListView.separated(
                           primary: false,
                           shrinkWrap: true,
@@ -179,48 +126,33 @@ class HomePage extends StatelessWidget {
                           itemCount: result.length,
                           separatorBuilder: (BuildContext context, int index) =>
                               Divider(indent: 3),
-                          itemBuilder: (BuildContext context, int index) => HDCell(
-                            name: result[index]['name'],
+                          itemBuilder: (BuildContext context, int index) =>
+                              HDCell(
+                            name: toCamelCase(result[index]['name']),
                             image: result[index]['profileimage'],
-
                             onTap: () => _onCellTap(result[index]),
                           ),
                         ),
                       ],
-
                     ),
                   ),
-
-
-
-
                 );
-              }
-              else{
+              } else {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
               }
-
-            }
-
-          /// Highlighted Doctors Section
-
-
-
-        )
-    );
+            }));
   }
-
 }
-
 
 class DrawClip extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-    path.lineTo(0, size.height/2);
-    path.cubicTo(size.width/4, 3*(size.height/2), 3*(size.width/4), size.height/2, size.width, size.height*0.9);
+    path.lineTo(0, size.height / 2);
+    path.cubicTo(size.width / 4, 3 * (size.height / 2), 3 * (size.width / 4),
+        size.height / 2, size.width, size.height * 0.9);
     path.lineTo(size.width, 0);
     return path;
   }

@@ -14,9 +14,8 @@ class SlideItem extends StatelessWidget {
       children: <Widget>[
         Container(
           width: 500,
-          height: 300 ,
+          height: 300,
           decoration: BoxDecoration(
-           // shape: BoxShape.circle,
             image: DecorationImage(
               image: AssetImage(slideList[index].imageUrl),
               fit: BoxFit.contain,
@@ -24,7 +23,7 @@ class SlideItem extends StatelessWidget {
           ),
         ),
         SizedBox(
-        height: 5 ,
+          height: 5,
         ),
         Text(
           slideList[index].title,
@@ -34,7 +33,7 @@ class SlideItem extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height:15,
+          height: 15,
         ),
         Text(
           slideList[index].description,

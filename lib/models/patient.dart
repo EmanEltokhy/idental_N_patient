@@ -10,9 +10,7 @@ class PatientModel {
   final String? profileimage;
   final String? devicetoken;
 
-
   PatientModel({
-
     this.name,
     this.email,
     this.phone,
@@ -20,40 +18,39 @@ class PatientModel {
     this.docid,
     this.profileimage,
     this.devicetoken,
-
-
   });
 
-  factory PatientModel.fromdoc(QueryDocumentSnapshot<Map<String, dynamic>> doc){
-
+  factory PatientModel.fromdoc(
+      QueryDocumentSnapshot<Map<String, dynamic>> doc) {
     final patient = PatientModel(
-      name :doc.data()!['name'],
-      email :doc.data()!['email'],
-      phone :doc.data()!['phone'],
-      uId :doc.data()!['uId'],
-      docid :doc.id,
+      name: doc.data()!['name'],
+      email: doc.data()!['email'],
+      phone: doc.data()!['phone'],
+      uId: doc.data()!['uId'],
+      docid: doc.id,
       profileimage: doc.data()!['profileimage'],
       devicetoken: doc.data()!['devicetoken'],
     );
     return patient;
   }
 
-
-  PatientModel copyWith({String? name,
+  PatientModel copyWith({
+    String? name,
     String? email,
     String? phone,
     String? uId,
     String? docid,
     String? profileimage,
     String? devicetoken,
-  })=>PatientModel(
-    name: name??this.name,
-    email: email??this.email,
-    profileimage: profileimage??this.profileimage,
-    uId: uId??this.uId,
-    phone: phone??this.phone,
-    devicetoken: devicetoken??this.devicetoken,
-  );
+  }) =>
+      PatientModel(
+        name: name ?? this.name,
+        email: email ?? this.email,
+        profileimage: profileimage ?? this.profileimage,
+        uId: uId ?? this.uId,
+        phone: phone ?? this.phone,
+        devicetoken: devicetoken ?? this.devicetoken,
+      );
 
   Map<String, dynamic> toMap() {
     print("Device Token ****************");
@@ -61,12 +58,12 @@ class PatientModel {
     return {
       'name': name,
       'email': email,
-      'phone': phone??'',
+      'phone': phone ?? '',
       'uId': uId,
-      'docid':docid,
-      'profileimage': profileimage??'https://www.gentledental.com/sites/default/files/2020-03/generic-doctor-profile.jpg',
+      'docid': docid,
+      'profileimage': profileimage ??
+          'https://www.gentledental.com/sites/default/files/2020-03/generic-doctor-profile.jpg',
       'devicetoken': NotificationHelper.deviceToken,
-
     };
   }
 }

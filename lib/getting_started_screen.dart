@@ -8,8 +8,6 @@ import 'package:idental_n_patient/modules/signup/signup.dart';
 import 'package:idental_n_patient/widgets/slide_dots.dart';
 import 'package:idental_n_patient/widgets/slide_item.dart';
 
-import 'shared/notification_helper.dart';
-
 class GettingStartedScreen extends StatefulWidget {
   const GettingStartedScreen({super.key});
 
@@ -38,10 +36,6 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
         curve: Curves.easeIn,
       );
     });
-
-
-
-
   }
 
   @override
@@ -58,7 +52,6 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -102,20 +95,13 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
               const SizedBox(
                 height: 20,
               ),
-
               defaultButton(250.0, 50.0, 'Create your account', true, () {
-
-
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => Signup(),
-
-
-
                   ),
                 );
-
               }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -132,7 +118,6 @@ class _GettingStartedScreenState extends State<GettingStartedScreen> {
                           color: Colors.teal, fontSize: 15),
                     ),
                     onPressed: () {
-
                       Navigator.push(
                         context,
                         MaterialPageRoute(

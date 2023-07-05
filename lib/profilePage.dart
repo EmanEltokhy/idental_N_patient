@@ -1,12 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:idental_n_patient/shared/components/components.dart';
 import 'package:idental_n_patient/shared/cubit/cubit.dart';
 import 'package:idental_n_patient/shared/cubit/states.dart';
-import 'package:idental_n_patient/shared/notification_helper.dart';
+import 'getting_started_screen.dart';
 
 class profileScreen extends StatelessWidget {
   const profileScreen({super.key});
@@ -20,9 +19,7 @@ class profileScreen extends StatelessWidget {
     return BlocProvider(
         create: (BuildContext context) => AppCubit()..getUserData(),
         child: BlocConsumer<AppCubit, AppStates>(
-          listener: (context, state) {
-
-          },
+          listener: (context, state) {},
           builder: (context, state) {
             Size size = MediaQuery.of(context).size;
             if (state is GetPatientDataSuccessState) {
@@ -52,7 +49,7 @@ class profileScreen extends StatelessWidget {
                               flex: 3,
                               child: Center(
                                 child: Text(
-                                  "Edit Profile",
+                                  "Profile",
                                   style: GoogleFonts.montserrat(fontSize: 25),
                                 ),
                               ),
@@ -82,42 +79,56 @@ class profileScreen extends StatelessWidget {
                             SizedBox(
                               width: 130,
                               height: 130,
-                              // decoration: BoxDecoration(
-                              //     border: Border.all(
-                              //         width: 4,
-                              //         // color: Theme.of(context).scaffoldBackgroundColor),
-                              //         color: Color(0xFD4D4D5FA)),
-                              //     boxShadow: [
-                              //       BoxShadow(
-                              //           spreadRadius: 2,
-                              //           blurRadius: 10,
-                              //           color: Colors.black.withOpacity(0.1),
-                              //           offset: Offset(0, 10)
-                              //       )
-                              //     ],
-                              //     shape: BoxShape.circle,
-                              //     image: DecorationImage(
-                              //         fit: BoxFit.cover,
-                              //         image: NetworkImage(
-                              //           '${state.dentist.profileimage}'
-                              //    )
-                              //     )
-                              // ),
                               child: CircleAvatar(
-                                radius: 64.0,
-                                backgroundColor:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                                child: state.patient.profileimage!
-                                        .startsWith('https')
-                                    ? CircleAvatar(
-                                        radius: 60.0,
-                                        backgroundImage: NetworkImage(
-                                            state.patient.profileimage!))
-                                    : CircleAvatar(
-                                        radius: 60.0,
-                                        backgroundImage: FileImage(
-                                            File(state.patient.profileimage!))),
-                              ),
+                                  radius: 64.0,
+                                  backgroundColor:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                  child: state.patient.profileimage!
+                                          .startsWith('https')
+                                      ? Container(
+                                          width: 130,
+                                          height: 130,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: 4,
+                                                  color: Color(0xFD4D4D5FA)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    spreadRadius: 2,
+                                                    blurRadius: 10,
+                                                    color: Colors.black
+                                                        .withOpacity(0.1),
+                                                    offset: Offset(0, 10))
+                                              ],
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: NetworkImage(
+                                                    state.patient.profileimage!,
+                                                  ))),
+                                        )
+                                      : Container(
+                                          width: 130,
+                                          height: 130,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: 4,
+                                                  color: Color(0xFD4D4D5FA)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    spreadRadius: 2,
+                                                    blurRadius: 10,
+                                                    color: Colors.black
+                                                        .withOpacity(0.1),
+                                                    offset: Offset(0, 10))
+                                              ],
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: FileImage(File(state
+                                                      .patient
+                                                      .profileimage!)))),
+                                        )),
                             ),
                             Positioned(
                                 bottom: 0,
@@ -128,15 +139,16 @@ class profileScreen extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      width: 3,
+                                      width: 4,
                                       color: Theme.of(context)
                                           .scaffoldBackgroundColor,
                                     ),
-                                    color: Colors.white,
+                                    color: Colors.teal,
                                   ),
                                   child: IconButton(
-                                    icon: const Icon(Icons.camera_alt_outlined),
-                                    color: Colors.teal,
+                                    padding: EdgeInsets.zero,
+                                    icon: Icon(Icons.camera_alt_rounded),
+                                    color: Colors.white,
                                     onPressed: () {
                                       AppCubit.get(context).getProfileImage();
                                     },
@@ -174,7 +186,14 @@ class profileScreen extends StatelessWidget {
                         height: 35,
                       ),
                       defaultButton(size.width, 50.0, "Logout", false, () {
-                        BlocProvider.of<AppCubit>(context).logout();
+                        AppCubit.get(context).logout();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GettingStartedScreen(),
+                          ),
+                        );
+                        print(nameController.text);
                       })
                     ],
                   ),

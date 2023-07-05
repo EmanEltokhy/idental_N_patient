@@ -6,7 +6,6 @@ class DetailCell extends StatelessWidget {
   final String subTitle;
 
   const DetailCell({
-    // required Key key,
     required this.title,
     required this.subTitle,
   }) ;

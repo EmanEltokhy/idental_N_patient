@@ -17,18 +17,15 @@ class AppCubit extends Cubit<AppStates> {
 
   PatientModel model = PatientModel();
   List<QueryDocumentSnapshot<Map<String, dynamic>>> data = [];
-  // uId: value.user!.uid;
   void getUserData() {
     final userid = FirebaseAuth.instance.currentUser!.uid;
 
     emit(GetPatientDataLoadingState());
-
     FirebaseFirestore.instance
         .collection('Patients')
         .where('uId', isEqualTo: userid)
         .get()
         .then((value) {
-      print(value.docs.first.data());
       data = value.docs;
       if (data.isEmpty) {
         emit(GetPatientDataErrorState('User Not Found'));
@@ -53,9 +50,7 @@ class AppCubit extends Cubit<AppStates> {
     if (pickedFile != null) {
       profileimage = File(pickedFile.path);
 
-      print(profileimage.path);
       model = model.copyWith(profileimage: profileimage.path);
-      print(model.profileimage);
       emit(ProfileImagePickedSuccessState());
       emit(GetPatientDataSuccessState(patient: model));
     } else {
@@ -70,11 +65,6 @@ class AppCubit extends Cubit<AppStates> {
     if (profileimage != null) {
       // upload image only if there is file
       emit(UpdatePatientDataLoadingState());
-
-      // FirebaseStorage.instance
-      //     .ref().child('Dentists/${Uri.file(profileimage.path).pathSegments.last}')
-      //     .putFile(profileimage!).then((value){
-      //       print('upload result ${value.ref.fullPath}');
       String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
 
       Reference referenceRoot = FirebaseStorage.instance.ref();
@@ -91,21 +81,6 @@ class AppCubit extends Cubit<AppStates> {
           profile_image: url,
         );
       } catch (error) {}
-      // value.ref.getDownloadURL().then((value) {
-      //   print(value);
-      //   editData(name: name,
-      //     phone: phone,
-      //     clinic_name: clinic_name,
-      //     clinic_address: clinic_address,
-      //     profile_image: value,);
-      // }
-      // ).catchError((error){
-      //   emit(UpdateDentistDataErrorState(error.toString()));
-      // });
-
-      // // ).catchError((error){
-      // //   emit(UpdateDentistDataErrorState(error.toString()));
-      // });
     } else {
       emit(UpdatePatientDataLoadingState());
       editData(
@@ -119,13 +94,11 @@ class AppCubit extends Cubit<AppStates> {
     FirebaseAuth.instance.signOut();
   }
 
-  void editData(
-      {
+  void editData({
     required String name,
     required String phone,
     String? profile_image,
-  }
-  ) {
+  }) {
     PatientModel patient = PatientModel(
       name: name,
       phone: phone,
@@ -147,7 +120,6 @@ class AppCubit extends Cubit<AppStates> {
 
   void getAllDentists() {
     List<Map<String, dynamic>> Alldentists = [];
-    // final userid = FirebaseAuth.instance.currentUser!.uid;
     var collection = FirebaseFirestore.instance.collection('Dentists');
     collection.snapshots().listen((querySnapshot) {
       for (var doc in querySnapshot.docs) {
@@ -155,7 +127,6 @@ class AppCubit extends Cubit<AppStates> {
       }
 
       emit(GetDentistDataSuccessState(dentists: Alldentists));
-
     });
   }
 
@@ -163,33 +134,33 @@ class AppCubit extends Cubit<AppStates> {
     List<Map<String, dynamic>> dentist_result = [];
     // final userid = FirebaseAuth.instance.currentUser!.uid;
     var collection = FirebaseFirestore.instance.collection('Dentists');
-    collection.where('name', isEqualTo: query).snapshots()..listen((querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-       dentist_result.add(doc.data());
-         print(doc.data());
-      }
-      emit(GetsearchDataSuccessState(dentists: dentist_result));
-    });
+    collection
+        .where(('name'), isGreaterThanOrEqualTo: query.toLowerCase())
+        .where('name', isLessThan: query.toLowerCase() + 'z')
+        .snapshots()
+      ..listen((querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          dentist_result.add(doc.data());
+        }
+        emit(GetsearchDataSuccessState(dentists: dentist_result));
+      });
   }
 
-
-
-  void getPatientReports(){
-    List<Map<String, dynamic>> Allreports= [];
+  void getPatientReports() {
+    List<Map<String, dynamic>> Allreports = [];
     final useremail = FirebaseAuth.instance.currentUser!.email;
     var collection = FirebaseFirestore.instance.collection('Reports');
-    collection.where('patientemail', isEqualTo:useremail ).snapshots().listen((querySnapshot) {
+    collection
+        .where('patientname', isEqualTo: useremail!.split('@')[0])
+        .snapshots()
+        .listen((querySnapshot) {
+      Allreports.clear();
       for (var doc in querySnapshot.docs) {
         Allreports.add(doc.data());
-
       }
-
       emit(GetReportSuccessState(Allreports));
-
     });
-
   }
-
 
   CalendarFormat format = CalendarFormat.month;
 
@@ -239,9 +210,8 @@ class AppCubit extends Cubit<AppStates> {
     required String time,
     required String day,
     // String? docId,
-  })
-  {
-    String id =  FirebaseFirestore.instance.collection('Appointments').doc().id;
+  }) {
+    String id = FirebaseFirestore.instance.collection('Appointments').doc().id;
     Appointment appmodel = Appointment(
       patientemail: '${FirebaseAuth.instance.currentUser?.email}',
       dentistname: dentistname,
@@ -260,29 +230,55 @@ class AppCubit extends Cubit<AppStates> {
         .then((value) {
       emit(pickedAppointmentSuccessState());
     }).catchError((error) {
-      print(error.toString());
       emit(pickedAppointmentErrorState(error.toString()));
-    }
-    );
+    });
   }
 
-  void getUpcomingApps(){
-    List<Map<String, dynamic>> UpcomingAppointments= [];
+  void getUpcomingApps() {
+    List<Map<String, dynamic>> UpcomingAppointments = [];
     final useremail = FirebaseAuth.instance.currentUser!.email;
     var collection = FirebaseFirestore.instance.collection('Appointments');
-    collection.where('patientemail', isEqualTo:useremail ).snapshots().listen((querySnapshot) {
+    collection
+        .where('patientemail', isEqualTo: useremail)
+        .snapshots()
+        .listen((querySnapshot) {
+      UpcomingAppointments.clear();
       for (var doc in querySnapshot.docs) {
-        if(doc['status']=="Approved"){
+        if (doc['status'] == "Pending") {
           UpcomingAppointments.add(doc.data());
         }
-
-
       }
-
       emit(GetAppointmentsSuccessState(appointments: UpcomingAppointments));
-
     });
-
   }
 
+  void getApprovedApps() {
+    List<Map<String, dynamic>> ApprovedAppointments = [];
+    final useremail = FirebaseAuth.instance.currentUser!.email;
+    var collection = FirebaseFirestore.instance.collection('Appointments');
+    collection
+        .where('patientemail', isEqualTo: useremail)
+        .snapshots()
+        .listen((querySnapshot) {
+      ApprovedAppointments.clear();
+      for (var doc in querySnapshot.docs) {
+        if (doc['status'] == "Approved") {
+          ApprovedAppointments.add(doc.data());
+        }
+      }
+      emit(GetAppointmentsSuccessState(appointments: ApprovedAppointments));
+    });
+  }
+
+  void declinedAppointment(String id) {
+    var db = FirebaseFirestore.instance
+        .collection('Appointments')
+        .doc(id)
+        .delete()
+        .then((value) {
+      getUpcomingApps();
+    }).catchError((error) {
+      print("failed delete");
+    });
+  }
 }
